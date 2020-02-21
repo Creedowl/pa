@@ -14,7 +14,9 @@ enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
  * For more details about the register encoding scheme, see i386 manual.
  */
 
+// change type to union to make sure rtlreg can access registers directly
 typedef union {
+  // use union to emulate a register
   union {
     uint32_t _32;
     uint16_t _16;
@@ -26,11 +28,12 @@ typedef union {
   /* In NEMU, rtlreg_t is exactly uint32_t. This makes RTL instructions
   * in PA2 able to directly access these registers.
   */
+
+ // use struct to wrap
   struct {
     rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
     vaddr_t eip;
   };
-
 
 } CPU_state;
 
