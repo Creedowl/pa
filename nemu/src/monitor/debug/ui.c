@@ -40,7 +40,9 @@ static int cmd_help(char *args);
 
 static int cmd_si(char *args) {
   int n = 1;
-  sscanf(args, "%d", &n);
+  if (args) {
+    sscanf(args, "%d", &n);
+  }
   cpu_exec(n);
   return 0;
 }
