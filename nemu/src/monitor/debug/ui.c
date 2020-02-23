@@ -39,7 +39,9 @@ static int cmd_q(char *args) {
 static int cmd_help(char *args);
 
 static int cmd_si(char *args) {
-  cpu_exec(1);
+  int n = 1;
+  sscanf(args, "%d", &n);
+  cpu_exec(n);
   return 0;
 }
 
