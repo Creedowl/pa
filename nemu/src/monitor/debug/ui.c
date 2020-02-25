@@ -60,6 +60,7 @@ static int cmd_info(char *args){
   char flag;
   sscanf(arg, "%c", &flag);
   if(flag == 'r') {
+    printf("%4s\t%10s\t%s\n", "REG", "HEX", "DEC");
     for (int i = R_EAX; i <= R_EDI; i++) {
       printf("%s:\t0x%08x\t%d\n", regsl[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
     }
