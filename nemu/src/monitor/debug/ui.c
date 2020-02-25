@@ -59,8 +59,6 @@ static int cmd_info(char *args){
     printf("Usage: info r|w\n");
     return 1;
   }
-  // char flag;
-  // sscanf(arg, "%c", &flag);
   if(*arg == 'r') {
     printf("%-4s\t%-10s\t%s\n", "REG", "HEX", "DEC");
     for (int i = R_EAX; i <= R_EDI; i++) {
