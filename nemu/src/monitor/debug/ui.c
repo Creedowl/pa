@@ -59,14 +59,14 @@ static int cmd_info(char *args){
     printf("Usage: info r|w\n");
     return 1;
   }
-  char flag;
-  sscanf(arg, "%c", &flag);
-  if(flag == 'r') {
+  // char flag;
+  // sscanf(arg, "%c", &flag);
+  if(*arg == 'r') {
     printf("%-4s\t%-10s\t%s\n", "REG", "HEX", "DEC");
     for (int i = R_EAX; i <= R_EDI; i++) {
       printf("%s:\t0x%08x\t%d\n", regsl[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
     }
-  }else if(flag == 'w') {
+  }else if(*arg == 'w') {
     /* TODO */
   }else {
     printf("Usage: info r|w\n");
