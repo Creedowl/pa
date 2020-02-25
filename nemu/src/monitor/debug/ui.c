@@ -52,7 +52,23 @@ static int cmd_si(char *args) {
 }
 
 static int cmd_info(char *args){
-  // char 
+  char *arg = strtok(NULL, " ");
+  if (arg == NULL || strlen(arg)>1) {
+    printf("Usage: info r|w\n");
+    return 1;
+  }
+  char flag;
+  sscanf(arg, "%c", &flag);
+  if(flag == 'r') {
+    for (int i = R_EAX; i <= R_EDI; i++) {
+      printf("%s:\t%8x\t%d\n", regsl[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
+    }
+  }else if(flag == 'w') {
+    /* TODO */
+  }else {
+    printf("Usage: info r|w\n");
+    return 1;
+  }
   return 0;
 }
 
