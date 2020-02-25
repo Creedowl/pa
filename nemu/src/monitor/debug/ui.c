@@ -38,10 +38,13 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+// single step
 static int cmd_si(char *args) {
   int n = 1;
   if (args) {
+    // if n in args isn't a number, n = 1
     sscanf(args, "%d", &n);
+    // n must greater than 0
     n = n >= 1 ? n : 1;
   }
   cpu_exec(n);
@@ -59,7 +62,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
 
   /* TODO: Add more commands */
-  { "si", "Run single step", cmd_si },
+  { "si", "Run single step, si [steps]", cmd_si },
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
