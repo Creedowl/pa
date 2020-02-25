@@ -51,8 +51,10 @@ static int cmd_si(char *args) {
   return 0;
 }
 
+// show infomation of registers or watchpoints
 static int cmd_info(char *args){
   char *arg = strtok(NULL, " ");
+  // no arg or arg isn't a char
   if (arg == NULL || strlen(arg)>1) {
     printf("Usage: info r|w\n");
     return 1;
