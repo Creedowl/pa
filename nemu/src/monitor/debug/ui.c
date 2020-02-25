@@ -61,7 +61,7 @@ static int cmd_info(char *args){
   sscanf(arg, "%c", &flag);
   if(flag == 'r') {
     for (int i = R_EAX; i <= R_EDI; i++) {
-      printf("%s:\t%8x\t%d\n", regsl[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
+      printf("%s:\t0x%08x\t%d\n", regsl[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
     }
   }else if(flag == 'w') {
     /* TODO */
