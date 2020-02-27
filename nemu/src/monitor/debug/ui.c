@@ -87,9 +87,10 @@ static int cmd_x(char *args) {
     printf("Usage: x [count] [address]\n");
     return 1;
   }
+  printf("%-10s\t%-10s\t%s\n", "Address", "Dword", "Byte");
   for (int i = 0; i < count; i++) {
-    printf("%08x\t", address + i * 4);
-    printf("%08x\t", vaddr_read(address + i * 4, 4));
+    printf("0x%08x\t", address + i * 4);
+    printf("0x%08x\t", vaddr_read(address + i * 4, 4));
     for (int j = 0; j < 4; j++) {
       printf("%02x ", vaddr_read(address + i * 4 + j, 1));
     }
