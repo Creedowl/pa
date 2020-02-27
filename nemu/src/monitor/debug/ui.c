@@ -77,6 +77,7 @@ static int cmd_info(char *args){
 static int cmd_x(char *args) {
   char *_count = strtok(NULL, " ");
   char *_address = strtok(NULL, " ");
+  // count and address are both required
   if(_count == NULL || _address == NULL) {
     printf("Usage: x [count] [address]\n");
     return 1;
@@ -90,7 +91,9 @@ static int cmd_x(char *args) {
   printf("%-10s\t%-10s\t%s\n", "Address", "Dword", "Byte");
   for (int i = 0; i < count; i++) {
     printf("0x%08x\t", address + i * 4);
+    // read 4 bytes memory, the value is little endian
     printf("0x%08x\t", vaddr_read(address + i * 4, 4));
+    // read 1 byte four times
     for (int j = 0; j < 4; j++) {
       printf("%02x ", vaddr_read(address + i * 4 + j, 1));
     }
