@@ -81,8 +81,8 @@ static int cmd_x(char *args) {
     printf("Usage: x [count] [address]\n");
     return 1;
   }
-  int count;
-  paddr_t address;
+  int count = 0;
+  paddr_t address = 0x0;
   if (sscanf(_count, "%d", &count) == -1 || sscanf(_address, "%x", &address) == -1) {
     printf("Usage: x [count] [address]\n");
     return 1;
