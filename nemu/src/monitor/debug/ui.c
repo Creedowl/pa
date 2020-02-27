@@ -73,6 +73,31 @@ static int cmd_info(char *args){
   return 0;
 }
 
+// scan memory
+static int cmd_x(char *args) {
+  char *_count = strtok(NULL, " ");
+  char *_address = strtok(NULL, " ");
+  if(_count == NULL || _address == NULL) {
+    printf("Usage: x [count] [address]\n");
+    return 1;
+  }
+  int count;
+  paddr_t address;
+  if (sscanf(_count, "%d", &count) == -1 || sscanf(_address, "%x", &address) == -1) {
+    printf("Usage: x [count] [address]\n");
+    return 1;
+  }
+  for (int i = 0; i < count; i++) {
+    printf("%08x\t", address + i * 4);
+    printf("%08x\t", vaddr_read(address + i * 4, 4));
+    for (int j = 0; j < 4; j++) {
+      printf("%02x ", vaddr_read(address + i * 4 + j, 1));
+    }
+    printf("\n");
+  }
+  return 0;
+}
+
 static struct {
   char *name;
   char *description;
@@ -85,6 +110,7 @@ static struct {
   /* TODO: Add more commands */
   { "si", "Run single step, si [steps]", cmd_si },
   { "info", "Show information of registers or watchpoints, info r|w", cmd_info },
+  { "x", "Scan memory, x [count] [address]", cmd_x },
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
