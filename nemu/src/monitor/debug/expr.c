@@ -34,7 +34,7 @@ static struct rule {
   {"\\)", ')'},
   {"^\\$e(ax|cx|dx|bx|sp|bp|si|di)", TK_REG},
   {"^0(x|X)[0-9a-fA-F]+", TK_HEX},
-  {"[0-9]+", TK_DEC}
+  {"[0-9]+", TK_DEC}  // posix regex doesn't support "\d"
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )

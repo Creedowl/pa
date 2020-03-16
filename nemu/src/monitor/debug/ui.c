@@ -102,6 +102,13 @@ static int cmd_x(char *args) {
   return 0;
 }
 
+// print value of expression
+static int cmd_p(char *args) {
+  printf("%s\n", args);
+  // TODO
+  return 0;
+}
+
 static struct {
   char *name;
   char *description;
@@ -115,6 +122,7 @@ static struct {
   { "si", "Run single step, si [steps]", cmd_si },
   { "info", "Show information of registers or watchpoints, info r|w", cmd_info },
   { "x", "Scan memory, x [count] [address]", cmd_x },
+  { "p", "Print value of expression, p EXP", cmd_p },
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
