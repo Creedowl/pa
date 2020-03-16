@@ -32,7 +32,7 @@ static struct rule {
   {"/", '/'},
   {"\\(", '('},
   {"\\)", ')'},
-  {"^\\$e(ax|cx|dx|bx|sp|bp|si|di)", TK_REG},
+  {"^\\$e(ax|cx|dx|bx|sp|bp|si|di)$", TK_REG},
   {"^0(x|X)[0-9a-fA-F]+", TK_HEX},
   {"\\d+", TK_DEC}
 };
