@@ -269,6 +269,7 @@ uint32_t eval(int p, int q) {
         case TK_NEG:
           return -val2;
         case TK_DEREF:
+          if  (val2 > 128 * 1024 * 1024) longjmp(env, 3);
           return vaddr_read(val2, 4);
         
         default:
@@ -330,6 +331,10 @@ uint32_t expr(char *e, bool *success) {
       break;
     case 2:
       printf("Bad expression\n");
+      *success = false;
+      break;
+    case 3:
+      printf("physical address is out of bound\n");
       *success = false;
       break;
     
