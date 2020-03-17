@@ -264,7 +264,7 @@ uint32_t eval(int p, int q) {
       int val2 = eval(op + 1, q);
       if (op == p) {
         switch (tokens[op].type) {
-        case TK_NEG:
+        case TK_NEQ:
           return !val2;
         case TK_DEREF:
           return vaddr_read(val2, 4);
