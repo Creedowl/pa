@@ -134,6 +134,7 @@ bool check_parentheses(int p, int q) {
         longjmp(env, 1);
     }
   }
+  if (count != 0) longjmp(env, 1);  
   return valid;
 }
 
@@ -168,14 +169,16 @@ uint32_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   // TODO();
   switch (setjmp(env)) {
+    case 0:
+      *success = true;
+      return eval(0, nr_token);
     case 1:
       printf("Bracket mismatch\n");
       *success = false;
       break;
     
     default:
-      *success = true;
-      return eval(0, nr_token);
+      break;
   }
 
   // return eval(0, nr_token);
