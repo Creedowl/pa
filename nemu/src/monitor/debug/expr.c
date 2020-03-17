@@ -162,7 +162,7 @@ bool compare_operator(int op1, int op2) {
   return w1 >= w2;
 }
 
-int find_dominated_op(int p, int q, bool *success) {
+int find_dominated_op(int p, int q) {
   int op = -1, count = 0, pre = 0xffff;
   for (int i=p; i<=q; i++) {
     if (tokens[i].type == '(') {
