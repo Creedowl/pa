@@ -104,6 +104,10 @@ static int cmd_x(char *args) {
 
 // print value of expression
 static int cmd_p(char *args) {
+  if (strlen(args) < 1) {
+    printf("Usage: p [EXP]\n");
+    return 1;
+  }
   bool success;
   uint32_t res;
   res = expr(args, &success);
