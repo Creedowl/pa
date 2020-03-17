@@ -111,7 +111,7 @@ static int cmd_p(char *args) {
     printf("\033[31mError: parse expression failed\033[0m\n");
     return 1;
   }
-  printf("%d\n", res);
+  printf("DEC: %d\nHEX: 0x%x\n", res, res);
   return 0;
 }
 
