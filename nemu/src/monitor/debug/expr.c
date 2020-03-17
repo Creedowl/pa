@@ -28,7 +28,6 @@ static struct {
   int type;
   uint8_t pri;
 } ops [] = {
-  { TK_DEREF, 0},
   { TK_EQ, 1 },
   { TK_NEQ, 1 },
   { TK_AND, 1 },
@@ -39,6 +38,7 @@ static struct {
   { '*', 3 },
   { '/', 3 },
   { TK_NEG, 4},
+  { TK_DEREF, 4},
   { 0xff, 0xff }
 };
 
