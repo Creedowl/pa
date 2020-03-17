@@ -104,7 +104,7 @@ static int cmd_x(char *args) {
 
 // print value of expression
 static int cmd_p(char *args) {
-  if (args == NULL || strlen(args) < 1) {
+  if (args == NULL) {
     printf("Usage: p [EXP]\n");
     return 1;
   }
