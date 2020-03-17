@@ -9,24 +9,37 @@
 
 static jmp_buf env;
 
-static struct {
-  uint8_t type;
-  uint8_t pri;
-} ops [] = {
-  { '+', 1 },
-  { '-', 1 },
-  { '*', 2 },
-  { '/', 2 },
-  { 0xff, 0xff }
-};
-
 enum {
   TK_NOTYPE = 256, TK_EQ,
 
   /* TODO: Add more token types */
   TK_REG,
   TK_HEX,
-  TK_DEC
+  TK_DEC,
+  TK_NEG,
+  TK_NEQ,
+  TK_AND,
+  TK_OR,
+  TK_NOT,
+  TK_DEREF
+};
+
+static struct {
+  int type;
+  uint8_t pri;
+} ops [] = {
+  { TK_DEREF, 0},
+  { TK_NEG, 0},
+  { TK_EQ, 1 },
+  { TK_NEQ, 1 },
+  { TK_AND, 1 },
+  { TK_OR, 1 },
+  { TK_NOT, 1 },
+  { '+', 2 },
+  { '-', 2 },
+  { '*', 3 },
+  { '/', 3 },
+  { 0xff, 0xff }
 };
 
 static struct rule {
@@ -48,7 +61,12 @@ static struct rule {
   {"\\)", ')'},
   {"^\\$e(ax|cx|dx|bx|sp|bp|si|di|ip)", TK_REG},
   {"^0(x|X)[0-9a-fA-F]+", TK_HEX},
-  {"[0-9]+", TK_DEC}  // posix regex doesn't support "\d"
+  {"[0-9]+", TK_DEC},  // posix regex doesn't support "\d"
+  {"!=", TK_NEQ},
+  {"&&", TK_AND},
+  {"\\|\\|", TK_OR},
+  {"!", TK_NOTYPE},
+  {"\\*", TK_DEREF}
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -252,11 +270,25 @@ uint32_t eval(int p, int q) {
           return val1 * val2;
         case '/':
           return val1 / val2;
+        case TK_EQ:
+          return val1 == val2;
+        case TK_NEQ:
+          return val1 != val2;
+        case TK_AND:
+          return val1 && val2;
+        case TK_OR:
+          return val1 || val2;
         default:
           break;
       }
     }
     return 0;
+}
+
+bool check_reref_type(int p) {
+  int type = tokens[p-1].type;
+  if (type != TK_HEX || type != TK_DEC || type != ')') return true;
+  return false;
 }
 
 uint32_t expr(char *e, bool *success) {
@@ -266,7 +298,13 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  // TODO();
+  for (int i=0; i<nr_token; i++) {
+    if (tokens[i].type=='*' && (i==0 || check_reref_type(i)))
+      tokens[i].type = TK_DEREF;
+    if (tokens[i].type=='-' && (i==0 || check_reref_type(i)))
+      tokens[i].type = TK_NEG;
+  }
+
   switch (setjmp(env)) {
     case 0:
       *success = true;
