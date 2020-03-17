@@ -174,7 +174,7 @@ bool check_operator(int type) {
 }
 
 bool compare_operator(int op1, int op2) {
-  uint8_t w1 = -1, w2 = -1;
+  int w1 = -1, w2 = -1;
   for (int i = 0; i < sizeof(ops) / sizeof(ops[0]); i++) {
     if (op1 == ops[i].type) w1 = ops[i].pri;
     if (op2 == ops[i].type) w2 = ops[i].pri;
