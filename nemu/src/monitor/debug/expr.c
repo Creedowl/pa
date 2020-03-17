@@ -171,6 +171,7 @@ int find_dominated_op(int p, int q) {
       count++;
       while (1) {
         i++;
+        if (i > nr_token) longjmp(env, 2);
         if (tokens[i].type == '(') count++;
         if (tokens[i].type == ')') {
           count--;
