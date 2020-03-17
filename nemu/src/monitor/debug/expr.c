@@ -65,7 +65,7 @@ static struct rule {
   {"!=", TK_NEQ},
   {"&&", TK_AND},
   {"\\|\\|", TK_OR},
-  {"!", TK_NOTYPE},
+  {"!", TK_NOT},
   {"\\*", TK_DEREF}
 };
 
