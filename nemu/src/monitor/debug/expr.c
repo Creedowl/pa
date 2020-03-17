@@ -28,17 +28,17 @@ static struct {
   int type;
   uint8_t pri;
 } ops [] = {
-  { TK_NEQ, 1 },
+  { TK_OR, 0 },
   { TK_AND, 1 },
-  { TK_OR, 1 },
-  { TK_NOT, 1 },
-  { '+', 2 },
-  { '-', 2 },
-  { '*', 3 },
-  { '/', 3 },
-  { TK_EQ, 4 },
-  { TK_NEG, 4 },
-  { TK_DEREF, 4 },
+  { TK_NEQ, 2 },
+  { TK_EQ, 2 },
+  { '+', 3 },
+  { '-', 3 },
+  { '*', 4 },
+  { '/', 4 },
+  { TK_NOT, 5 },
+  { TK_NEG, 5 },
+  { TK_DEREF, 5 },
   { 0xff, 0xff }
 };
 
