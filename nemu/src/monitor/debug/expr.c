@@ -5,6 +5,9 @@
  */
 #include <sys/types.h>
 #include <regex.h>
+#include <setjmp.h>
+
+static jmp_buf env;
 
 enum {
   TK_NOTYPE = 256, TK_EQ,
@@ -117,6 +120,45 @@ static bool make_token(char *e) {
   return true;
 }
 
+bool check_parentheses(int p, int q) {
+  if (tokens[p].type != '(' || tokens[q].type != ')') return false;
+  int count = 0;
+  bool valid = true;
+  for (int i = p; i <= q; i++) {
+    if (tokens[i].type == '(') count++;
+    if (tokens[i].type == ')') {
+      count--;
+      if (count == 0 && i != q) valid = false;
+      if (count < 0) 
+        // Bracket mismatch
+        longjmp(env, 1);
+    }
+  }
+  return valid;
+}
+
+uint32_t eval(int p, int q) {
+    if (p > q) {
+        /* Bad expression */
+    }
+    else if (p == q) {
+        /* Single token.
+        * For now this token should be a number.
+        * Return the value of the number.
+        */
+    }
+    else if (check_parentheses(p, q) == true) {
+        /* The expression is surrounded by a matched pair of parentheses.
+        * If that is the case, just throw away the parentheses.
+        */
+        return eval(p + 1, q - 1);
+    }
+    else {
+        /* We should do more things here. */
+    }
+    return 0;
+}
+
 uint32_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
@@ -124,7 +166,18 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+  // TODO();
+  switch (setjmp(env)) {
+    case 1:
+      printf("Bracket mismatch\n");
+      *success = false;
+      break;
+    
+    default:
+      break;
+  }
 
-  return 0;
+  return eval(0, nr_token);
+
+  // return 0;
 }
