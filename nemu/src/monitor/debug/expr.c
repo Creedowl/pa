@@ -32,7 +32,7 @@ static struct rule {
   {"/", '/'},
   {"\\(", '('},
   {"\\)", ')'},
-  {"^\\$e(ax|cx|dx|bx|sp|bp|si|di)", TK_REG},
+  {"^\\$e(ax|cx|dx|bx|sp|bp|si|di|ip)", TK_REG},
   {"^0(x|X)[0-9a-fA-F]+", TK_HEX},
   {"[0-9]+", TK_DEC}  // posix regex doesn't support "\d"
 };
@@ -95,6 +95,10 @@ static bool make_token(char *e) {
           case TK_REG:
           case TK_HEX:
           case TK_DEC:
+            if(substr_len > 32) {
+              printf("token str too long\n");
+              return false;
+            }
             strncpy(tokens[nr_token].str, substr_start, substr_len);
           default: 
             tokens[nr_token++].type = rules[i].token_type;

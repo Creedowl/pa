@@ -104,8 +104,14 @@ static int cmd_x(char *args) {
 
 // print value of expression
 static int cmd_p(char *args) {
-  printf("%s\n", args);
-  // TODO
+  bool success;
+  uint32_t res;
+  res = expr(args, &success);
+  if (!success) {
+    printf("\033[31mError: parse expression failed\033[0m\n");
+    return 1;
+  }
+  printf("%d\n", res);
   return 0;
 }
 
