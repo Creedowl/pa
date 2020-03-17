@@ -261,8 +261,19 @@ uint32_t eval(int p, int q) {
     else {
       /* We should do more things here. */
       int op = find_dominated_op(p, q);
-      int val1 = eval(p, op - 1);
       int val2 = eval(op + 1, q);
+      if (op == p) {
+        switch (tokens[op].type) {
+        case TK_NEG:
+          return !val2;
+        case TK_DEREF:
+          return vaddr_read(val2, 4);
+        
+        default:
+          break;
+        }
+      }
+      int val1 = eval(p, op - 1);
       switch (tokens[op].type) {
         case '+':
           return val1 + val2;
