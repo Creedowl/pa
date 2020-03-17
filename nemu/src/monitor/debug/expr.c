@@ -9,6 +9,16 @@
 
 static jmp_buf env;
 
+static struct {
+  char type;
+  uint8_t pri;
+} ops [] = {
+  { '+', 1 },
+  { '-', 1 },
+  { '*', 2 },
+  { '/', 2 },
+};
+
 enum {
   TK_NOTYPE = 256, TK_EQ,
 
@@ -136,6 +146,44 @@ bool check_parentheses(int p, int q) {
   }
   if (count != 0) longjmp(env, 1);  
   return valid;
+}
+
+bool check_operator(int type) {
+  if (type == '+' || type == '-' || type == '*' || type == '/') return true;
+  return false;
+}
+
+bool compare_operator(int op1, int op2) {
+  uint8_t w1, w2;
+  for (int i = 0; i < sizeof(ops) / sizeof(ops[0]); i++) {
+    if (op1 == ops[i].type) w1 = ops[i].pri;
+    if (op2 == ops[i].type) w2 = ops[i].pri;
+  }
+  return w1 >= w2;
+}
+
+int find_dominated_op(int p, int q, bool *success) {
+  int op = -1, count = 0, pre = 0xffff;
+  for (int i=p; i<=q; i++) {
+    if (tokens[i].type == '(') {
+      count++;
+      while (1) {
+        i++;
+        if (tokens[i].type == '(') count++;
+        if (tokens[i].type == ')') {
+          count--;
+          if (count == 0) break;
+        }
+      }
+      continue;
+    }
+    if (!check_operator(tokens[i].type)) continue;
+    if (compare_operator(pre, tokens[i].type)) {
+      pre = tokens[i].type;
+      op = i;
+    }
+  }
+  return op;
 }
 
 uint32_t eval(int p, int q) {
