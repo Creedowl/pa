@@ -204,6 +204,8 @@ uint32_t eval(int p, int q) {
     }
     else {
         /* We should do more things here. */
+        int op = find_dominated_op(p, q);
+        printf("%d\n", op);
     }
     return 0;
 }
