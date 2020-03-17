@@ -10,13 +10,14 @@
 static jmp_buf env;
 
 static struct {
-  char type;
+  uint8_t type;
   uint8_t pri;
 } ops [] = {
   { '+', 1 },
   { '-', 1 },
   { '*', 2 },
   { '/', 2 },
+  { 0xff, 0xff }
 };
 
 enum {
@@ -154,16 +155,17 @@ bool check_operator(int type) {
 }
 
 bool compare_operator(int op1, int op2) {
-  uint8_t w1, w2;
+  uint8_t w1 = -1, w2 = -1;
   for (int i = 0; i < sizeof(ops) / sizeof(ops[0]); i++) {
     if (op1 == ops[i].type) w1 = ops[i].pri;
     if (op2 == ops[i].type) w2 = ops[i].pri;
+    if (op1 != -1 && op2 != -1) break;
   }
   return w1 >= w2;
 }
 
 int find_dominated_op(int p, int q) {
-  int op = -1, count = 0, pre = 0xffff;
+  int op = -1, count = 0, pre = 0xff;
   for (int i=p; i<=q; i++) {
     if (tokens[i].type == '(') {
       count++;
