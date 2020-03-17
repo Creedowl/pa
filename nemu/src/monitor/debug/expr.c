@@ -174,7 +174,8 @@ uint32_t expr(char *e, bool *success) {
       break;
     
     default:
-      eval(0, nr_token);
+      *success = true;
+      return eval(0, nr_token);
   }
 
   // return eval(0, nr_token);
