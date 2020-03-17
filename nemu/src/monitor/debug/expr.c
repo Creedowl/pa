@@ -169,7 +169,7 @@ bool check_parentheses(int p, int q) {
 
 bool check_operator(int type) {
   // if (type == '+' || type == '-' || type == '*' || type == '/') return true;
-  if (type != TK_HEX || type != TK_DEC || type != '('|| type != ')') return true;
+  if (type != TK_HEX && type != TK_DEC && type != '('&& type != ')') return true;
   return false;
 }
 
