@@ -193,38 +193,47 @@ uint32_t eval(int p, int q) {
         /* Bad expression */
     }
     else if (p == q) {
-        /* Single token.
-        * For now this token should be a number.
-        * Return the value of the number.
-        */
-    }
-    else if (check_parentheses(p, q) == true) {
-        /* The expression is surrounded by a matched pair of parentheses.
-        * If that is the case, just throw away the parentheses.
-        */
-        return eval(p + 1, q - 1);
-    }
-    else {
-        /* We should do more things here. */
-        int op = find_dominated_op(p, q);
-        int val1 = eval(p, op - 1);
-        int val2 = eval(op + 1, q);
-        switch (tokens[op].type) {
-        case '+':
-          return val1 + val2;
-          break;
-        case '-':
-          return val1 - val2;
-          break;
-        case '*':
-          return val1 * val2;
-          break;
-        case '/':
-          return val1 / val2;
-          break;
+      /* Single token.
+      * For now this token should be a number.
+      * Return the value of the number.
+      */
+      uint32_t val;
+      switch (tokens[p].type) {
+        case TK_DEC:
+          sscanf(tokens[p].str, "%d", &val);
+          return val;
+          // return (uint32_t)tokens[p].str;
+        case TK_HEX:
+          sscanf(tokens[p].str, "%x", &val);
+          return val;
+        
         default:
           break;
-        }
+      }
+    }
+    else if (check_parentheses(p, q) == true) {
+      /* The expression is surrounded by a matched pair of parentheses.
+      * If that is the case, just throw away the parentheses.
+      */
+      return eval(p + 1, q - 1);
+    }
+    else {
+      /* We should do more things here. */
+      int op = find_dominated_op(p, q);
+      int val1 = eval(p, op - 1);
+      int val2 = eval(op + 1, q);
+      switch (tokens[op].type) {
+        case '+':
+          return val1 + val2;
+        case '-':
+          return val1 - val2;
+        case '*':
+          return val1 * val2;
+        case '/':
+          return val1 / val2;
+        default:
+          break;
+      }
     }
     return 0;
 }
