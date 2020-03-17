@@ -191,6 +191,7 @@ int find_dominated_op(int p, int q) {
 uint32_t eval(int p, int q) {
     if (p > q) {
         /* Bad expression */
+        longjmp(env, 2);
     }
     else if (p == q) {
       /* Single token.
@@ -198,14 +199,16 @@ uint32_t eval(int p, int q) {
       * Return the value of the number.
       */
       uint32_t val;
+      char *str = tokens[p].str;
       switch (tokens[p].type) {
         case TK_DEC:
-          sscanf(tokens[p].str, "%d", &val);
+          sscanf(str, "%d", &val);
           return val;
-          // return (uint32_t)tokens[p].str;
         case TK_HEX:
-          sscanf(tokens[p].str, "%x", &val);
+          sscanf(str, "%x", &val);
           return val;
+        case TK_REG:
+          // if (strcmp(tokens[p].str))
         
         default:
           break;
@@ -254,12 +257,13 @@ uint32_t expr(char *e, bool *success) {
       printf("Bracket mismatch\n");
       *success = false;
       break;
+    case 2:
+      printf("Bad expression\n");
+      *success = false;
+      break;
     
     default:
       break;
   }
-
-  // return eval(0, nr_token);
-
   return 0;
 }
