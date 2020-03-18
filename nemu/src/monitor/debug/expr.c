@@ -335,15 +335,11 @@ uint32_t expr(char *e, bool *success) {
           break;
         }
       case '(':
-        if (i==0 || check_reref_type(i)) {
-          bracket_count++;
-          break;
-        }
+        bracket_count++;
+        break;
       case ')':
-        if (i==0 || check_reref_type(i)) {
-          bracket_count--;
-          break;
-        }
+        bracket_count--;
+        break;
       
       default:
         break;
