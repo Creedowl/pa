@@ -112,7 +112,7 @@ static int cmd_p(char *args) {
   uint32_t res;
   res = expr(args, &success);
   if (!success) {
-    printf("\033[31mError: parse expression failed\033[0m\n");
+    printf("\033[31mError: execute expression failed\033[0m\n");
     return 1;
   }
   printf("DEC: %d\nHEX: 0x%x\n", res, res);
