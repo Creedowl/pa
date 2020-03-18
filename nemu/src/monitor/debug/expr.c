@@ -327,13 +327,13 @@ uint32_t expr(char *e, bool *success) {
       case '*':
         if (i==0 || check_reref_type(i)) {
           tokens[i].type = TK_DEREF;
-          break;
         }
+        break;
       case '-':
         if (i==0 || check_reref_type(i)) {
           tokens[i].type = TK_NEG;
-          break;
         }
+        break;
       case '(':
         bracket_count++;
         break;
