@@ -314,7 +314,7 @@ uint32_t expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   int bracket_count = 0;
-  for (int i=0; i<nr_token; i++) {
+  for (int i=0; i<=nr_token; i++) {
     // if (tokens[i].type=='*' && (i==0 || check_reref_type(i)))
     //   tokens[i].type = TK_DEREF;
     // if (tokens[i].type=='-' && (i==0 || check_reref_type(i)))
