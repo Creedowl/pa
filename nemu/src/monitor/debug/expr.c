@@ -313,11 +313,47 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
+  int bracket_count = 0;
   for (int i=0; i<nr_token; i++) {
-    if (tokens[i].type=='*' && (i==0 || check_reref_type(i)))
-      tokens[i].type = TK_DEREF;
-    if (tokens[i].type=='-' && (i==0 || check_reref_type(i)))
-      tokens[i].type = TK_NEG;
+    // if (tokens[i].type=='*' && (i==0 || check_reref_type(i)))
+    //   tokens[i].type = TK_DEREF;
+    // if (tokens[i].type=='-' && (i==0 || check_reref_type(i)))
+    //   tokens[i].type = TK_NEG;
+    // if (tokens[i].type == '(')
+    //   bracket_count++;
+    // if (tokens[i].type == ')')
+    //   bracket_count--;
+    switch (tokens[i].type) {
+      case '*':
+        if (i==0 || check_reref_type(i)) {
+          tokens[i].type = TK_DEREF;
+          break;
+        }
+      case '-':
+        if (i==0 || check_reref_type(i)) {
+          tokens[i].type = TK_NEG;
+          break;
+        }
+      case '(':
+        if (i==0 || check_reref_type(i)) {
+          bracket_count++;
+          break;
+        }
+      case ')':
+        if (i==0 || check_reref_type(i)) {
+          bracket_count--;
+          break;
+        }
+      
+      default:
+        break;
+    }
+  }
+
+  if (bracket_count != 0) {
+    printf("Bracket mismatch\n");
+    *success = false;
+    return 0;
   }
 
   switch (setjmp(env)) {
