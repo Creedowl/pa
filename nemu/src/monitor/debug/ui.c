@@ -45,7 +45,7 @@ static int cmd_si(char *args) {
     // if n in args isn't a number, n = 1
     sscanf(args, "%d", &n);
     // n must greater than 0
-    n = n >= 1 ? n : 1;
+    n = n >= -1 ? n : 1;
   }
   cpu_exec(n);
   return 0;

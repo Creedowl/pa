@@ -168,7 +168,6 @@ bool check_parentheses(int p, int q) {
 }
 
 bool check_operator(int type) {
-  // if (type == '+' || type == '-' || type == '*' || type == '/') return true;
   if (type != TK_HEX && type != TK_DEC && type != TK_REG && type != '('&& type != ')')
     return true;
   return false;
@@ -211,8 +210,8 @@ int find_dominated_op(int p, int q) {
 
 uint32_t eval(int p, int q) {
     if (p > q) {
-        /* Bad expression */
-        longjmp(env, 2);
+      /* Bad expression */
+      longjmp(env, 2);
     }
     else if (p == q) {
       /* Single token.
