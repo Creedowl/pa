@@ -127,11 +127,12 @@ static bool make_token(char *e) {
           case TK_REG:
           case TK_HEX:
           case TK_DEC:
-            if(substr_len > 32) {
+            if(substr_len > 31) {
               printf("token str too long\n");
               return false;
             }
             strncpy(tokens[nr_token].str, substr_start, substr_len);
+            tokens[nr_token].str[substr_len] = '\0';
           default: 
             tokens[nr_token++].type = rules[i].token_type;
         }
