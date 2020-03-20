@@ -300,7 +300,7 @@ uint32_t eval(int p, int q) {
     return 0;
 }
 
-bool check_reref_type(int p) {
+bool check_pre(int p) {
   int type = tokens[p-1].type;
   if (type != TK_HEX && type != TK_DEC && type != ')') return true;
   return false;
@@ -315,24 +315,12 @@ uint32_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   int bracket_count = 0;
   for (int i=0; i<=nr_token; i++) {
-    // if (tokens[i].type=='*' && (i==0 || check_reref_type(i)))
-    //   tokens[i].type = TK_DEREF;
-    // if (tokens[i].type=='-' && (i==0 || check_reref_type(i)))
-    //   tokens[i].type = TK_NEG;
-    // if (tokens[i].type == '(')
-    //   bracket_count++;
-    // if (tokens[i].type == ')')
-    //   bracket_count--;
     switch (tokens[i].type) {
       case '*':
-        if (i==0 || check_reref_type(i)) {
-          tokens[i].type = TK_DEREF;
-        }
+        if (i==0 || check_pre(i)) tokens[i].type = TK_DEREF;
         break;
       case '-':
-        if (i==0 || check_reref_type(i)) {
-          tokens[i].type = TK_NEG;
-        }
+        if (i==0 || check_pre(i)) tokens[i].type = TK_NEG;
         break;
       case '(':
         bracket_count++;
