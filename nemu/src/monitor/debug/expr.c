@@ -136,7 +136,10 @@ static bool make_token(char *e) {
           default: 
             tokens[nr_token++].type = rules[i].token_type;
         }
-
+        if (nr_token > 31) {
+          printf("too many tokens\n");
+          return false;
+        }
         break;
       }
     }
