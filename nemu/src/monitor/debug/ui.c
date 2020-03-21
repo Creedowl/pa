@@ -92,6 +92,7 @@ static int cmd_x(char *args) {
   // }
   bool success;
   address = expr(exp, &success);
+  Log("%d %x\n", address, address);
   printf("%-10s\t%-10s\t%s\n", "Address", "Dword", "Byte");
   for (int i = 0; i < count; i++) {
     printf("0x%08x\t", address + i * 4);
