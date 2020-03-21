@@ -90,6 +90,8 @@ static int cmd_x(char *args) {
     printf("Usage: x [count] [address]\n");
     return 1;
   }
+  bool success;
+  address = expr(exp, &success);
   printf("%-10s\t%-10s\t%s\n", "Address", "Dword", "Byte");
   for (int i = 0; i < count; i++) {
     printf("0x%08x\t", address + i * 4);
