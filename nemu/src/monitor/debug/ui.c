@@ -77,22 +77,27 @@ static int cmd_info(char *args){
 static int cmd_x(char *args) {
   char *_count = strtok(NULL, " ");
   char *exp = args + strlen(_count) + 1;
-  Log("%s\n", exp);
-  char *_address = strtok(NULL, " ");
-  // count and address are both required
-  if(_count == NULL || _address == NULL) {
-    printf("Usage: x [count] [address]\n");
+  // count and expression are both required
+  if(_count == NULL) {
+    printf("Usage: x [count] [expression]\n");
     return 1;
   }
   int count = 0;
   paddr_t address = 0x0;
   if (!sscanf(_count, "%d", &count)) {
-    printf("Usage: x [count] [address]\n");
+    printf("Usage: x [count] [expression]\n");
     return 1;
   }
   bool success;
   address = expr(exp, &success);
-  Log("%d %x\n", address, address);
+  if (!success) {
+    printf("bad expression\n");
+    return 1;
+  }
+  if (address < 0 || address > 128 * 1024 * 1024) {
+    printf("physical address %08x is out of bound\n", address);
+    return 1;
+  }
   printf("%-10s\t%-10s\t%s\n", "Address", "Dword", "Byte");
   for (int i = 0; i < count; i++) {
     printf("0x%08x\t", address + i * 4);
