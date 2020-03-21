@@ -308,7 +308,7 @@ uint32_t eval(int p, int q) {
         case TK_OR:
           return val1 || val2;
         default:
-          break;
+          longjmp(env, 4);
       }
     }
     return 0;
