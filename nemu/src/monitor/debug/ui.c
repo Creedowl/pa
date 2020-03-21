@@ -91,7 +91,7 @@ static int cmd_x(char *args) {
   bool success;
   address = expr(exp, &success);
   if (!success) {
-    printf("bad expression\n");
+    printf("\033[31mError: execute expression failed\033[0m\n");
     return 1;
   }
   if (address < 0 || address >= 128 * 1024 * 1024) {
