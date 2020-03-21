@@ -89,6 +89,7 @@ static int cmd_x(char *args) {
     return 1;
   }
   bool success;
+  // evaluate
   address = expr(exp, &success);
   if (!success) {
     printf("\033[31mError: execute expression failed\033[0m\n");
@@ -143,7 +144,7 @@ static struct {
   /* TODO: Add more commands */
   { "si", "Run single step, si [steps]", cmd_si },
   { "info", "Show information of registers or watchpoints, info r|w", cmd_info },
-  { "x", "Scan memory, x [count] [address]", cmd_x },
+  { "x", "Scan memory, x [count] [expression]", cmd_x },
   { "p", "Print value of expression, p EXP", cmd_p },
 };
 
