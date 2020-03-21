@@ -76,6 +76,8 @@ static int cmd_info(char *args){
 // scan memory
 static int cmd_x(char *args) {
   char *_count = strtok(NULL, " ");
+  char *exp = args + strlen(_count);
+  Log("%s\n", exp);
   char *_address = strtok(NULL, " ");
   // count and address are both required
   if(_count == NULL || _address == NULL) {

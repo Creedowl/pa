@@ -281,6 +281,7 @@ uint32_t eval(int p, int q) {
         case TK_NEG:
           return -val2;
         case TK_DEREF:
+          // overflow
           if  (val2 > 128 * 1024 * 1024) longjmp(env, 3);
           return vaddr_read(val2, 4);
         
@@ -358,6 +359,7 @@ uint32_t expr(char *e, bool *success) {
   switch (setjmp(env)) {
     case 0:
       *success = true;
+      // evaluate
       return eval(0, nr_token);
     case 1:
       printf("Bracket mismatch\n");
