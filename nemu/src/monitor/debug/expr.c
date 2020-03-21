@@ -260,7 +260,7 @@ uint32_t eval(int p, int q) {
             return cpu.eip;
         
         default:
-          break;
+          longjmp(env, 4);
       }
     }
     else if (check_parentheses(p, q) == true) {
@@ -273,6 +273,7 @@ uint32_t eval(int p, int q) {
       /* We should do more things here. */
       int op = find_dominated_op(p, q);
       uint32_t val2 = eval(op + 1, q);
+      // unary operator
       if (op == p) {
         switch (tokens[op].type) {
         case TK_NOT:
@@ -284,10 +285,11 @@ uint32_t eval(int p, int q) {
           return vaddr_read(val2, 4);
         
         default:
-          break;
+          longjmp(env, 4);
         }
       }
       uint32_t val1 = eval(p, op - 1);
+      // evaluate
       switch (tokens[op].type) {
         case '+':
           return val1 + val2;
@@ -366,6 +368,10 @@ uint32_t expr(char *e, bool *success) {
       break;
     case 3:
       printf("physical address is out of bound\n");
+      *success = false;
+      break;
+    case 4:
+      printf("unknown token type\n");
       *success = false;
       break;
     
