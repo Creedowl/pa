@@ -104,12 +104,14 @@ static int cmd_x(char *args) {
 
 // print value of expression
 static int cmd_p(char *args) {
+  // cmd p must have an expression
   if (args == NULL) {
     printf("Usage: p [EXP]\n");
     return 1;
   }
   bool success;
   uint32_t res;
+  // expression evaluation
   res = expr(args, &success);
   if (!success) {
     printf("\033[31mError: execute expression failed\033[0m\n");

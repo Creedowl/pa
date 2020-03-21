@@ -122,8 +122,10 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
+          // ignore space
           case TK_NOTYPE:
             break;
+          // tokens need store value
           case TK_REG:
           case TK_HEX:
           case TK_DEC:
@@ -133,10 +135,11 @@ static bool make_token(char *e) {
             }
             strncpy(tokens[nr_token].str, substr_start, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
+          // add token
           default: 
             tokens[nr_token++].type = rules[i].token_type;
         }
-        if (nr_token > 320) {
+        if (nr_token > 31) {
           printf("too many tokens\n");
           return false;
         }
@@ -153,6 +156,7 @@ static bool make_token(char *e) {
   return true;
 }
 
+// check whether a expression is surround by parentheses
 bool check_parentheses(int p, int q) {
   if (tokens[p].type != '(' || tokens[q].type != ')') return false;
   int count = 0;
@@ -171,6 +175,7 @@ bool check_parentheses(int p, int q) {
   return valid;
 }
 
+// check whether a token is an operator
 bool check_operator(int type) {
   if (type != TK_HEX && type != TK_DEC && type != TK_REG && type != '('&& type != ')')
     return true;
@@ -184,6 +189,7 @@ bool compare_operator(int op1, int op2) {
     if (op2 == ops[i].type) w2 = ops[i].pri;
     if (w1 != -1 && w2 != -1) break;
   }
+  // if two operators have the same precedence, the latter takes precedence
   return w1 >= w2;
 }
 
@@ -192,8 +198,10 @@ int find_dominated_op(int p, int q) {
   for (int i=p; i<=q; i++) {
     if (tokens[i].type == '(') {
       count++;
+      // skip parentheses
       while (1) {
         i++;
+        // parentheses dont't match, may never be called
         if (i > nr_token) longjmp(env, 2);
         if (tokens[i].type == '(') count++;
         if (tokens[i].type == ')') {
