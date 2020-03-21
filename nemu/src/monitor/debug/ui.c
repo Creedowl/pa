@@ -94,7 +94,7 @@ static int cmd_x(char *args) {
     printf("bad expression\n");
     return 1;
   }
-  if (address < 0 || address > 128 * 1024 * 1024) {
+  if (address < 0 || address >= 128 * 1024 * 1024) {
     printf("physical address %08x is out of bound\n", address);
     return 1;
   }

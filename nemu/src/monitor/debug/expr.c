@@ -282,7 +282,7 @@ uint32_t eval(int p, int q) {
           return -val2;
         case TK_DEREF:
           // overflow
-          if  (val2 > 128 * 1024 * 1024) longjmp(env, 3);
+          if  (val2 >= 128 * 1024 * 1024) longjmp(env, 3);
           return vaddr_read(val2, 4);
         
         default:
