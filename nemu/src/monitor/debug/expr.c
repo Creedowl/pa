@@ -354,6 +354,7 @@ uint32_t expr(char *e, bool *success) {
     return 0;
   }
 
+  // error handler
   switch (setjmp(env)) {
     case 0:
       *success = true;
@@ -376,6 +377,8 @@ uint32_t expr(char *e, bool *success) {
       break;
     
     default:
+    printf("unknown error\n");
+      *success = false;
       break;
   }
   return 0;
