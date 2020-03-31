@@ -20,4 +20,6 @@ bool delete_watchpoint(int NO);
 
 void list_watchpoint();
 
+bool scan_watchpoint();
+
 #endif

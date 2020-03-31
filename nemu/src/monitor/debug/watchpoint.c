@@ -1,5 +1,6 @@
 #include "monitor/watchpoint.h"
 #include "monitor/expr.h"
+#include "cpu/reg.h"
 
 #define NR_WP 32
 
@@ -93,4 +94,25 @@ void list_watchpoint() {
     printf("%2d %-20s 0x%08x\n", wp->NO, wp->expr, wp->old_val);
     wp = wp->next;
   }
+}
+
+bool scan_watchpoint() {
+  if (head == NULL) return false;
+  WP *wp = head;
+  bool success, pause = false;
+  while (wp != NULL) {
+    // expression evaluation
+    wp->new_val = expr(wp->expr, &success);
+    if (!success) panic("bad expression");
+    if (wp->new_val != wp->old_val) {
+      pause = true;
+      printf("Hit watchpoint %d at address 0x%08x\n", wp->NO, cpu.eip);
+      printf("expr      = %s\n", wp->expr);
+      printf("old value = 0x%08x\n", wp->old_val);
+      printf("new value = 0x%08x\n", wp->new_val);
+    }
+    wp = wp->next;
+  }
+  if (pause) printf("program paused");
+  return pause;
 }
