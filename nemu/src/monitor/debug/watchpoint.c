@@ -65,6 +65,7 @@ int set_watchpoint(char *e) {
   }
   wp->old_val = res;
   strcpy(wp->expr, e);
+  wp->expr[strlen(e)] = '\0';
   printf("Set watchpoint #%d\n", wp->NO);
   printf("expr      = %s\n", e);
   printf("old value = 0x%08x\n", res);
