@@ -113,6 +113,6 @@ bool scan_watchpoint() {
     }
     wp = wp->next;
   }
-  if (pause) printf("program paused");
+  if (pause) printf("program paused\n");
   return pause;
 }
