@@ -48,3 +48,25 @@ void free_wp(WP *wp) {
   wp->next = free_;
   free_ = wp;
 }
+
+int set_watchpoint(char *e) {
+  WP *wp = new_wp();
+  if (wp == NULL) {
+    printf("\033[31mError: wp_pool is full\033[0m\n");
+    return -1;
+  }
+  bool success;
+  uint32_t res;
+  // expression evaluation
+  res = expr(e, &success);
+  if (!success) {
+    printf("\033[31mError: invalid expression\033[0m\n");
+    return -1;
+  }
+  wp->old_val = res;
+  strcpy(wp->expr, e);
+  printf("Set watchpoint #%d\n", wp->NO);
+  printf("expr      = %s\n", e);
+  printf("old value = 0x%08x\n", res);
+  return wp->NO;
+}

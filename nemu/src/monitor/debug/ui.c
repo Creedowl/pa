@@ -137,24 +137,16 @@ static int cmd_w(char *args) {
     printf("Usage: w [EXP]\n");
     return 1;
   }
-  WP *wp = new_wp();
-  if (wp == NULL) {
-    printf("\033[31mError: wp_pool is full\033[0m\n");
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  if (args == NULL) {
+    printf("Usage: w [EXP]\n");
     return 1;
   }
-  bool success;
-  uint32_t res;
-  // expression evaluation
-  res = expr(args, &success);
-  if (!success) {
-    printf("\033[31mError: invalid expression\033[0m\n");
-    return 1;
-  }
-  wp->old_val = res;
-  strcpy(wp->expr, args);
-  printf("Set watchpoint #%d\n", wp->NO);
-  printf("expr      = %s\n", args);
-  printf("old value = %08x\n", res);
+  int no = set_watchpoint(args);
+  if (no == -1) return 1;
   return 0;
 }
 
@@ -172,7 +164,8 @@ static struct {
   { "info", "Show information of registers or watchpoints, info r|w", cmd_info },
   { "x", "Scan memory, x [count] [expression]", cmd_x },
   { "p", "Print value of expression, p EXP", cmd_p },
-  { "w", "Set a watchpoint for an expression, w EXP", cmd_w }
+  { "w", "Set a watchpoint for an expression, w EXP", cmd_w },
+  { "d", "Delete a watchpoint, w NO", cmd_d }
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
