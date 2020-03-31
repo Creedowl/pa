@@ -91,5 +91,6 @@ void list_watchpoint() {
   WP *wp = head;
   while (wp != NULL) {
     printf("%2d %15s 0x%08x\n", wp->NO, wp->expr, wp->old_val);
+    wp = wp->next;
   }
 }
