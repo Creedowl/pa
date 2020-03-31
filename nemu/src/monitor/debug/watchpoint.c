@@ -110,6 +110,7 @@ bool scan_watchpoint() {
       printf("expr      = %s\n", wp->expr);
       printf("old value = 0x%08x\n", wp->old_val);
       printf("new value = 0x%08x\n", wp->new_val);
+      wp->old_val = wp->new_val;
     }
     wp = wp->next;
   }
