@@ -81,3 +81,15 @@ bool delete_watchpoint(int NO) {
   if (NO >= NR_WP || NO < 0) return false;
   return free_wp(&wp_pool[NO]);
 }
+
+void list_watchpoint() {
+  if (head == NULL) {
+    printf("No watchpoints\n");
+    return;
+  }
+  printf("NO %-15s Old Value\n", "Expr");
+  WP *wp = head;
+  while (wp != NULL) {
+    printf("%2d %15s 0x%08x\n", wp->NO, wp->expr, wp->old_val);
+  }
+}

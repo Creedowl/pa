@@ -65,7 +65,7 @@ static int cmd_info(char *args){
       printf("%s:\t0x%08x\t%d\n", regsl[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
     }
   }else if(*arg == 'w') {
-    /* TODO */
+    list_watchpoint();
   }else {
     printf("Usage: info r|w\n");
     return 1;
