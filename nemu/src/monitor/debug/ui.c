@@ -148,9 +148,10 @@ static int cmd_d(char *args) {
     return 1;
   }
   if (!delete_watchpoint(NO)) {
-    printf("No such watchpoint\n");
+    printf("Watchpoint %d doesn't exist\n", NO);
     return 1;
   }
+  printf("Watchpoint %d deleted\n", NO);
   return 0;
 }
 
