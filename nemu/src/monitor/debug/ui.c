@@ -142,8 +142,13 @@ static int cmd_w(char *args) {
 }
 
 static int cmd_d(char *args) {
-  if (args == NULL) {
+  int NO = 0;
+  if (args == NULL || !sscanf(args, "%d", &NO)) {
     printf("Usage: w [EXP]\n");
+    return 1;
+  }
+  if (!delete_watchpoint(NO)) {
+    printf("No such watchpoint\n");
     return 1;
   }
   return 0;

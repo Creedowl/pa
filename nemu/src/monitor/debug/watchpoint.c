@@ -36,17 +36,22 @@ WP* new_wp() {
   return pre->next;
 }
 
-void free_wp(WP *wp) {
+bool free_wp(WP *wp) {
   if (head == wp) {
     head = wp->next;
     wp->next = free_;
     free_ = wp;
+  } else {
+    WP *pre = head;
+    while (pre->next != wp) {
+      pre = pre->next;
+      if (pre == NULL) return false;
+    }
+    pre->next = wp->next;
+    wp->next = free_;
+    free_ = wp;
   }
-  WP *pre = head;
-  while (pre->next != wp) pre = pre->next;
-  pre->next = wp->next;
-  wp->next = free_;
-  free_ = wp;
+  return true;
 }
 
 int set_watchpoint(char *e) {
@@ -70,4 +75,9 @@ int set_watchpoint(char *e) {
   printf("expr      = %s\n", e);
   printf("old value = 0x%08x\n", res);
   return wp->NO;
+}
+
+bool delete_watchpoint(int NO) {
+  if (NO >= NR_WP || NO < 0) return false;
+  return free_wp(&wp_pool[NO]);
 }
