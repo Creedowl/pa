@@ -87,10 +87,10 @@ void list_watchpoint() {
     printf("No watchpoints\n");
     return;
   }
-  printf("NO %-15s Old Value\n", "Expr");
+  printf("NO %-20s Old Value\n", "Expr");
   WP *wp = head;
   while (wp != NULL) {
-    printf("%2d %15s 0x%08x\n", wp->NO, wp->expr, wp->old_val);
+    printf("%2d %-20s 0x%08x\n", wp->NO, wp->expr, wp->old_val);
     wp = wp->next;
   }
 }
