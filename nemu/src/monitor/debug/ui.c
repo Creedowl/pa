@@ -137,7 +137,8 @@ static int cmd_w(char *args) {
     printf("Usage: w [EXP]\n");
     return 1;
   }
-  return 0;
+  int no = set_watchpoint(args);
+  return no == -1 ? 1 : 0;
 }
 
 static int cmd_d(char *args) {
@@ -145,8 +146,6 @@ static int cmd_d(char *args) {
     printf("Usage: w [EXP]\n");
     return 1;
   }
-  int no = set_watchpoint(args);
-  if (no == -1) return 1;
   return 0;
 }
 
