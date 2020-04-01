@@ -25,4 +25,6 @@ bool scan_watchpoint();
 
 int set_breakpoint(char *e);
 
+bool trap_breakpoint(vaddr_t *eip);
+
 #endif

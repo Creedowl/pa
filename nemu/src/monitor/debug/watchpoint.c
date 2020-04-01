@@ -125,7 +125,7 @@ bool scan_watchpoint() {
 
 int set_breakpoint(char *e) {
   bool success;
-  uint32_t address;
+  vaddr_t address;
   address = expr(e, &success);
   if (!success) {
     printf("\033[31mError: invalid expression\033[0m\n");
@@ -152,4 +152,20 @@ int set_breakpoint(char *e) {
   printf("Address = 0x%08x\n", address);
   printf("Opcode  = %x\n", wp->old_val);
   return wp->NO;
+}
+
+bool trap_breakpoint(vaddr_t *eip) {
+  if (head == NULL) panic("no breakpoints set\n");
+  *eip -= 1;
+  WP *wp = head;
+  while (wp != NULL) {
+    if (wp->is_wp) continue;
+    if (wp->new_val == *eip) {
+      vaddr_write(*eip, 1, wp->old_val);
+      break;
+    }
+    wp = wp->next;
+  }
+  if (wp == NULL) panic("no breakpoints set at 0x%08x\n", *eip);
+  return true;
 }
