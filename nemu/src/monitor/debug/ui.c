@@ -155,6 +155,15 @@ static int cmd_d(char *args) {
   return 0;
 }
 
+static int cmd_b(char *args) {
+  if (args == NULL) {
+    printf("Usage: b [EXP]\n");
+    return 1;
+  }
+  int no = set_breakpoint(args);
+  return no == -1 ? 1 : 0;
+}
+
 static struct {
   char *name;
   char *description;
@@ -170,7 +179,8 @@ static struct {
   { "x", "Scan memory, x [count] [expression]", cmd_x },
   { "p", "Print value of expression, p EXP", cmd_p },
   { "w", "Set a watchpoint for an expression, w EXP", cmd_w },
-  { "d", "Delete a watchpoint, w NO", cmd_d }
+  { "d", "Delete a watchpoint, w NO", cmd_d },
+  { "b", "Set breakpoint at specified location, b EXP", cmd_b }
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))

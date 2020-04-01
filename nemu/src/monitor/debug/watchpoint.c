@@ -1,6 +1,7 @@
 #include "monitor/watchpoint.h"
 #include "monitor/expr.h"
 #include "cpu/reg.h"
+#include "memory/memory.h"
 
 #define NR_WP 32
 
@@ -56,11 +57,6 @@ bool free_wp(WP *wp) {
 }
 
 int set_watchpoint(char *e) {
-  WP *wp = new_wp();
-  if (wp == NULL) {
-    printf("\033[31mError: wp_pool is full\033[0m\n");
-    return -1;
-  }
   bool success;
   uint32_t res;
   // expression evaluation
@@ -69,9 +65,15 @@ int set_watchpoint(char *e) {
     printf("\033[31mError: invalid expression\033[0m\n");
     return -1;
   }
+  WP *wp = new_wp();
+  if (wp == NULL) {
+    printf("\033[31mError: wp_pool is full\033[0m\n");
+    return -1;
+  }
   wp->old_val = res;
   strcpy(wp->expr, e);
   wp->expr[strlen(e)] = '\0';
+  wp->is_wp = true;
   printf("Set watchpoint #%d\n", wp->NO);
   printf("expr      = %s\n", e);
   printf("old value = 0x%08x\n", res);
@@ -91,7 +93,8 @@ void list_watchpoint() {
   printf("NO %-20s Old Value\n", "Expr");
   WP *wp = head;
   while (wp != NULL) {
-    printf("%2d %-20s 0x%08x\n", wp->NO, wp->expr, wp->old_val);
+    if (wp->is_wp)
+      printf("%2d %-20s 0x%08x\n", wp->NO, wp->expr, wp->old_val);
     wp = wp->next;
   }
 }
@@ -101,12 +104,14 @@ bool scan_watchpoint() {
   WP *wp = head;
   bool success, pause = false;
   while (wp != NULL) {
+    if (!wp->is_wp) continue;
     // expression evaluation
     wp->new_val = expr(wp->expr, &success);
     if (!success) panic("bad expression");
     if (wp->new_val != wp->old_val) {
       pause = true;
-      printf("Hit watchpoint %d at address 0x%08x\n", wp->NO, cpu.eip);
+      printf("\033[34mHit watchpoint %d at address 0x%08x\033[0m\n",
+             wp->NO, cpu.eip);
       printf("expr      = %s\n", wp->expr);
       printf("old value = 0x%08x\n", wp->old_val);
       printf("new value = 0x%08x\n", wp->new_val);
@@ -116,4 +121,35 @@ bool scan_watchpoint() {
   }
   if (pause) printf("program paused\n");
   return pause;
+}
+
+int set_breakpoint(char *e) {
+  bool success;
+  uint32_t address;
+  address = expr(e, &success);
+  if (!success) {
+    printf("\033[31mError: invalid expression\033[0m\n");
+    return -1;
+  }
+  if (address < 0 || address >= 128 * 1024 * 1024) {
+    printf("\033[31mError: address %08x is out of bound\033[0m\n", address);
+    return -1;
+  }
+  WP *wp = new_wp();
+  if (wp == NULL) {
+    printf("\033[31mError: wp_pool is full\033[0m\n");
+    return -1;
+  }
+  // address
+  wp->new_val = address;
+  strcpy(wp->expr, e);
+  wp->expr[strlen(e)] = '\0';
+  wp->is_wp = false;
+  wp->old_val = vaddr_read(address, 1);
+  vaddr_write(address, 1, 0xcc);
+  printf("Set breakpoint #%d\n", wp->NO);
+  printf("expr    = %s\n", e);
+  printf("Address = 0x%08x\n", address);
+  printf("Opcode  = %x\n", wp->old_val);
+  return wp->NO;
 }
