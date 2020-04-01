@@ -155,6 +155,20 @@ int set_breakpoint(char *e) {
   return wp->NO;
 }
 
+void list_breakpoint() {
+  if (head == NULL) {
+    printf("No breakpoints\n");
+    return;
+  }
+  printf("NO %-20s Address\n", "Expr");
+  WP *wp = head;
+  while (wp != NULL) {
+    if (!wp->is_wp)
+      printf("%2d %-20s 0x%08x\n", wp->NO, wp->expr, wp->new_val);
+    wp = wp->next;
+  }
+}
+
 bool trap_breakpoint(vaddr_t *eip) {
   if (head == NULL) panic("no breakpoints set\n");
   *eip -= 1;
@@ -162,6 +176,8 @@ bool trap_breakpoint(vaddr_t *eip) {
   while (wp != NULL) {
     if (wp->is_wp) continue;
     if (wp->new_val == *eip) {
+      printf("\033[34mHit breakpoint %d at address 0x%08x\033[0m\n",
+        wp->NO, *eip);
       vaddr_write(*eip, 1, wp->old_val);
       break;
     }

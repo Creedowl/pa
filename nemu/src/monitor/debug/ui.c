@@ -56,7 +56,7 @@ static int cmd_info(char *args){
   char *arg = strtok(NULL, " ");
   // no arg or arg isn't a char
   if (arg == NULL || strlen(arg)>1) {
-    printf("Usage: info r|w\n");
+    printf("Usage: info r|w|b\n");
     return 1;
   }
   if(*arg == 'r') {
@@ -64,10 +64,12 @@ static int cmd_info(char *args){
     for (int i = R_EAX; i <= R_EDI; i++) {
       printf("%s:\t0x%08x\t%d\n", regsl[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
     }
-  }else if(*arg == 'w') {
+  } else if (*arg == 'w') {
     list_watchpoint();
-  }else {
-    printf("Usage: info r|w\n");
+  } else if (*arg == 'b') {
+    list_breakpoint();
+  } else {
+    printf("Usage: info r|w|b\n");
     return 1;
   }
   return 0;
@@ -144,14 +146,14 @@ static int cmd_w(char *args) {
 static int cmd_d(char *args) {
   int NO = 0;
   if (args == NULL || !sscanf(args, "%d", &NO)) {
-    printf("Usage: w [EXP]\n");
+    printf("Usage: d NO\n");
     return 1;
   }
   if (!delete_watchpoint(NO)) {
-    printf("Watchpoint %d doesn't exist\n", NO);
+    printf("Watchpoint/Breakpoint %d doesn't exist\n", NO);
     return 1;
   }
-  printf("Watchpoint %d deleted\n", NO);
+  printf("Watchpoint/Breakpoint %d deleted\n", NO);
   return 0;
 }
 
@@ -175,11 +177,11 @@ static struct {
 
   /* TODO: Add more commands */
   { "si", "Run single step, si [steps]", cmd_si },
-  { "info", "Show information of registers or watchpoints, info r|w", cmd_info },
+  { "info", "Show information of registers or watchpoints or breakpoints, info r|w|b", cmd_info },
   { "x", "Scan memory, x [count] [expression]", cmd_x },
   { "p", "Print value of expression, p EXP", cmd_p },
   { "w", "Set a watchpoint for an expression, w EXP", cmd_w },
-  { "d", "Delete a watchpoint, w NO", cmd_d },
+  { "d", "Delete a watchpoint or breakpoint, d NO", cmd_d },
   { "b", "Set breakpoint at specified location, b EXP", cmd_b }
 };
 
