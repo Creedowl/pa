@@ -29,7 +29,6 @@ make_EHelper(mov_cr2r) {
 
 make_EHelper(int) {
   // TODO();
-  Log("eip: %x\n", *eip);
   nemu_state = NEMU_STOP;
   trap_breakpoint(eip);
   print_asm("int %s", id_dest->str);

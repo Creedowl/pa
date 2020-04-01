@@ -49,6 +49,7 @@ bool free_wp(WP *wp) {
       pre = pre->next;
       if (pre == NULL) return false;
     }
+    if (!wp->is_wp) vaddr_write(wp->new_val, 1, wp->old_val);
     pre->next = wp->next;
     wp->next = free_;
     free_ = wp;
