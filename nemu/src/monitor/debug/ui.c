@@ -134,6 +134,7 @@ static int cmd_p(char *args) {
   return 0;
 }
 
+// set a watchpoint
 static int cmd_w(char *args) {
   if (args == NULL) {
     printf("Usage: w [EXP]\n");
@@ -143,6 +144,7 @@ static int cmd_w(char *args) {
   return no == -1 ? 1 : 0;
 }
 
+// delete a watchpoint or breakpoint
 static int cmd_d(char *args) {
   int NO = 0;
   if (args == NULL || !sscanf(args, "%d", &NO)) {
@@ -157,6 +159,7 @@ static int cmd_d(char *args) {
   return 0;
 }
 
+// set a breakpoint
 static int cmd_b(char *args) {
   if (args == NULL) {
     printf("Usage: b [EXP]\n");

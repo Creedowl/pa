@@ -27,6 +27,7 @@ make_EHelper(mov_cr2r) {
 #endif
 }
 
+// hit breakpoint
 make_EHelper(int) {
   // TODO();
   nemu_state = NEMU_STOP;

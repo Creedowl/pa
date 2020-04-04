@@ -8,6 +8,8 @@ typedef struct watchpoint {
   struct watchpoint *next;
 
   /* TODO: Add more members if necessary */
+
+  // wp may be a watchpoint or breakpoint
   bool is_wp;
   char expr[64];
   uint32_t old_val;

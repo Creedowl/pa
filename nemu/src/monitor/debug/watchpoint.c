@@ -22,6 +22,7 @@ void init_wp_pool() {
 
 /* TODO: Implement the functionality of watchpoint */
 
+// return a free node in wp_pool
 WP* new_wp() {
   if (free_ == NULL) return NULL;
   if (head == NULL) {
@@ -38,6 +39,7 @@ WP* new_wp() {
   return pre->next;
 }
 
+// free a node
 bool free_wp(WP *wp) {
   if (head == wp) {
     head = wp->next;
@@ -49,6 +51,7 @@ bool free_wp(WP *wp) {
       pre = pre->next;
       if (pre == NULL) return false;
     }
+    // if wp is a breakpoint, reset the opcode
     if (!wp->is_wp) vaddr_write(wp->new_val, 1, wp->old_val);
     pre->next = wp->next;
     wp->next = free_;
@@ -57,6 +60,7 @@ bool free_wp(WP *wp) {
   return true;
 }
 
+// set a watchpoint
 int set_watchpoint(char *e) {
   bool success;
   uint32_t res;
@@ -81,11 +85,13 @@ int set_watchpoint(char *e) {
   return wp->NO;
 }
 
+// delete a watchpoint
 bool delete_watchpoint(int NO) {
   if (NO >= NR_WP || NO < 0) return false;
   return free_wp(&wp_pool[NO]);
 }
 
+// list all watchpoints
 void list_watchpoint() {
   if (head == NULL) {
     printf("No watchpoints\n");
@@ -100,15 +106,18 @@ void list_watchpoint() {
   }
 }
 
+// scan all watchpoints, check for watchpoints updates
 bool scan_watchpoint() {
   if (head == NULL) return false;
   WP *wp = head;
   bool success, pause = false;
   while (wp != NULL) {
+    // skip breakpoint
     if (wp->is_wp) {
       // expression evaluation
       wp->new_val = expr(wp->expr, &success);
       if (!success) panic("bad expression");
+      // may hit multiple watchpoints
       if (wp->new_val != wp->old_val) {
         pause = true;
         printf("\033[34mHit watchpoint %d at address 0x%08x\033[0m\n",
@@ -125,6 +134,7 @@ bool scan_watchpoint() {
   return pause;
 }
 
+// set a breakpoint
 int set_breakpoint(char *e) {
   bool success;
   vaddr_t address;
@@ -142,12 +152,14 @@ int set_breakpoint(char *e) {
     printf("\033[31mError: wp_pool is full\033[0m\n");
     return -1;
   }
-  // address
+  // address is stored here
   wp->new_val = address;
   strcpy(wp->expr, e);
   wp->expr[strlen(e)] = '\0';
   wp->is_wp = false;
+  // origin opcode is stored here
   wp->old_val = vaddr_read(address, 1);
+  // write opcode int3 (0xcc)
   vaddr_write(address, 1, 0xcc);
   printf("Set breakpoint #%d\n", wp->NO);
   printf("expr    = %s\n", e);
@@ -156,6 +168,7 @@ int set_breakpoint(char *e) {
   return wp->NO;
 }
 
+// list all breakpoints
 void list_breakpoint() {
   if (head == NULL) {
     printf("No breakpoints\n");
@@ -170,6 +183,7 @@ void list_breakpoint() {
   }
 }
 
+// hit a breakpoint: opcode 0xcc
 bool trap_breakpoint(vaddr_t *eip) {
   if (head == NULL) panic("no breakpoints set\n");
   *eip -= 1;
@@ -179,6 +193,7 @@ bool trap_breakpoint(vaddr_t *eip) {
     if (wp->new_val == *eip) {
       printf("\033[34mHit breakpoint %d at address 0x%08x\033[0m\n",
         wp->NO, *eip);
+      // restore the origin opcode
       vaddr_write(*eip, 1, wp->old_val);
       break;
     }
