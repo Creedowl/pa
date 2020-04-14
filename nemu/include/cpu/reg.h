@@ -32,9 +32,8 @@ typedef union {
  // use struct to wrap
   struct {
     rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
+    vaddr_t eip;
   };
-
-  vaddr_t eip;
 
 } CPU_state;
 
