@@ -14,25 +14,44 @@ enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
  * For more details about the register encoding scheme, see i386 manual.
  */
 
-// change type to union to make sure rtlreg can access registers directly
-typedef union {
-  // use union to emulate a register
+typedef struct {
+  // use union to make sure rtlreg can access registers directly
+  union {  
+    // use union to emulate a register
+    union {
+      uint32_t _32;
+      uint16_t _16;
+      uint8_t _8[2];
+    } gpr[8];
+
+    /* Do NOT change the order of the GPRs' definitions. */
+
+    /* In NEMU, rtlreg_t is exactly uint32_t. This makes RTL instructions
+    * in PA2 able to directly access these registers.
+    */
+
+  // use struct to wrap
+    struct {
+      rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
+      vaddr_t eip;
+    };
+  };
+
+  // eflags
   union {
-    uint32_t _32;
-    uint16_t _16;
-    uint8_t _8[2];
-  } gpr[8];
-
-  /* Do NOT change the order of the GPRs' definitions. */
-
-  /* In NEMU, rtlreg_t is exactly uint32_t. This makes RTL instructions
-  * in PA2 able to directly access these registers.
-  */
-
- // use struct to wrap
-  struct {
-    rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
-    vaddr_t eip;
+    struct {
+        uint32_t CF :1;
+        uint32_t :5;
+        uint32_t ZF :1;
+        uint32_t SF :1;
+        uint32_t :1;
+        uint32_t IF :1;
+        uint32_t :1;
+        uint32_t OF :1;
+        uint32_t :20;
+    };
+    uint32_t EFLAGS;
+    uint16_t FLAGS;
   };
 
 } CPU_state;
