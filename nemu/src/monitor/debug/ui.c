@@ -51,12 +51,12 @@ static int cmd_si(char *args) {
   return 0;
 }
 
-// show infomation of registers or watchpoints
+// show infomation of registers or watchpoints or eflags
 static int cmd_info(char *args){
   char *arg = strtok(NULL, " ");
   // no arg or arg isn't a char
   if (arg == NULL || strlen(arg)>1) {
-    printf("Usage: info r|w|b\n");
+    printf("Usage: info r|w|b|e\n");
     return 1;
   }
   if(*arg == 'r') {
@@ -68,8 +68,15 @@ static int cmd_info(char *args){
     list_watchpoint();
   } else if (*arg == 'b') {
     list_breakpoint();
+  } else if (*arg == 'e') {
+    printf("CF:\t%d\n", cpu.CF);
+    printf("ZF:\t%d\n", cpu.ZF);
+    printf("SF:\t%d\n", cpu.SF);
+    printf("IF:\t%d\n", cpu.IF);
+    printf("OF:\t%d\n", cpu.OF);
+    printf("EFLAGS:\t%x\n", cpu.EFLAGS);
   } else {
-    printf("Usage: info r|w|b\n");
+    printf("Usage: info r|w|b|e\n");
     return 1;
   }
   return 0;
@@ -180,7 +187,7 @@ static struct {
 
   /* TODO: Add more commands */
   { "si", "Run single step, si [steps]", cmd_si },
-  { "info", "Show information of registers or watchpoints or breakpoints, info r|w|b", cmd_info },
+  { "info", "Show information of registers or watchpoints or breakpoints or eflags, info r|w|b|e", cmd_info },
   { "x", "Scan memory, x [count] [expression]", cmd_x },
   { "p", "Print value of expression, p EXP", cmd_p },
   { "w", "Set a watchpoint for an expression, w EXP", cmd_w },
