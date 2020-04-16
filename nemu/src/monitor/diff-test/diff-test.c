@@ -33,6 +33,15 @@ void diff_test_skip_nemu() { is_skip_nemu = true; }
     regs.eip = cpu.eip; \
   } while (0)
 
+#define check_reg(qreg, reg) \
+  do { \
+    if (qreg.reg != cpu.reg) { \
+      diff = true; \
+      Log("cpu.%s: %x\n", #reg, cpu.reg); \
+      Log("qemu.%s: %x\n", #reg, qreg.reg); \
+    } \
+  } while (0)
+
 static uint8_t mbr[] = {
   // start16:
   0xfa,                           // cli
@@ -149,7 +158,15 @@ void difftest_step(uint32_t eip) {
 
   // TODO: Check the registers state with QEMU.
   // Set `diff` as `true` if they are not the same.
-  TODO();
+  check_reg(r, eax);
+  check_reg(r, ecx);
+  check_reg(r, edx);
+  check_reg(r, ebx);
+  check_reg(r, esp);
+  check_reg(r, ebp);
+  check_reg(r, esi);
+  check_reg(r, edi);
+  check_reg(r, eip);
 
   if (diff) {
     nemu_state = NEMU_END;
