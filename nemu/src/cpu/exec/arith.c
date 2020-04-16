@@ -12,7 +12,14 @@ make_EHelper(sub) {
   // set reg
   operand_write(id_dest, &t0);
   rtl_update_ZFSF(&t0, id_dest->width);
-
+  rtl_sltu(&t1, &id_dest->val, &id_src->val);
+  rtl_set_CF(&t1);
+  rtl_xor(&t1, &id_dest->val, &id_src->val);
+  rtl_xor(&t2, &t0, &id_src->val);
+  rtl_not(&t2);
+  rtl_and(&t3, &t1, &t2);
+  rtl_msb(&t3, &t3, id_dest->width);
+  rtl_set_OF(&t3);
 
   print_asm_template2(sub);
 }
