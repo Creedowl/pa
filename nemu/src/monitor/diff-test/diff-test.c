@@ -36,7 +36,8 @@ void diff_test_skip_nemu() { is_skip_nemu = true; }
 #define check_reg(qreg, reg) \
     if (qreg.reg != cpu.reg) { \
       diff = true; \
-      printf("\033[31mnemu.%s: %08x\n", #reg, cpu.reg); \
+      printf("\033[31mdiff test failed\n"); \
+      printf("nemu.%s: %08x\n", #reg, cpu.reg); \
       printf("qemu.%s: %08x\033[0m\n", #reg, qreg.reg); \
     }
 
