@@ -34,13 +34,11 @@ void diff_test_skip_nemu() { is_skip_nemu = true; }
   } while (0)
 
 #define check_reg(qreg, reg) \
-  do { \
     if (qreg.reg != cpu.reg) { \
       diff = true; \
-      Log("cpu.%s: %x\n", #reg, cpu.reg); \
-      Log("qemu.%s: %x\n", #reg, qreg.reg); \
-    } \
-  } while (0)
+      printf("\033[31mcpu.%s: %x\n", #reg, cpu.reg); \
+      printf("qemu.%s: %x\033[0m\n", #reg, qreg.reg); \
+    }
 
 static uint8_t mbr[] = {
   // start16:
