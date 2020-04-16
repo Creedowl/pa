@@ -317,7 +317,8 @@ uint32_t eval(int p, int q) {
 
 bool check_pre(int p) {
   int type = tokens[p-1].type;
-  if (type != TK_HEX && type != TK_DEC && type != ')') return true;
+  if (type != TK_HEX && type != TK_DEC && type !=TK_REG && type != ')')
+    return true;
   return false;
 }
 
