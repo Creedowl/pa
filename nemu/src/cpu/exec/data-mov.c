@@ -6,7 +6,8 @@ make_EHelper(mov) {
 }
 
 make_EHelper(push) {
-  rtl_lr(&t0, id_dest->reg, 4);
+  if (id_dest->type == OP_TYPE_REG) rtl_lr(&t0, id_dest->reg, 4);
+  else t0 = id_dest->val;
   rtl_push(&t0);
 
   print_asm_template1(push);
