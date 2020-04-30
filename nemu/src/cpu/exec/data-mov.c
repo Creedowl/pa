@@ -6,8 +6,11 @@ make_EHelper(mov) {
 }
 
 make_EHelper(push) {
-  if (id_dest->type == OP_TYPE_REG) rtl_lr(&t0, id_dest->reg, 4);
-  else t0 = id_dest->val;
+  if (id_dest->type == OP_TYPE_REG)
+    rtl_lr(&t0, id_dest->reg, 4);
+  else if (id_dest->type == OP_TYPE_MEM)
+    t0 = id_dest->val;
+  else panic("unknow type\n");
   rtl_push(&t0);
 
   print_asm_template1(push);
