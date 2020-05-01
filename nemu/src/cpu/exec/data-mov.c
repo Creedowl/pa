@@ -10,7 +10,8 @@ make_EHelper(push) {
     rtl_lr(&t0, id_dest->reg, 4);
   else if (id_dest->type == OP_TYPE_MEM)
     t0 = id_dest->addr;
-  else panic("unknow type\n");
+  else
+    panic("push: unknow type %d\n", id_dest->type);
   rtl_push(&t0);
 
   print_asm_template1(push);
