@@ -37,9 +37,9 @@ void diff_test_skip_nemu() { is_skip_nemu = true; }
   if (qreg.reg != cpu.reg) { \
     diff = true; \
     printf("\033[31mdiff test failed\n"); \
-    printf("eip: %08x\n", cpu.eip); \
-    printf("nemu.%s: %08x\n", #reg, cpu.reg); \
-    printf("qemu.%s: %08x\033[0m\n", #reg, qreg.reg); \
+    printf("eip: 0x%08x\n", cpu.eip); \
+    printf("nemu.%s: 0x%08x\n", #reg, cpu.reg); \
+    printf("qemu.%s: 0x%08x\033[0m\n", #reg, qreg.reg); \
   }
 
 static uint8_t mbr[] = {
