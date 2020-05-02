@@ -28,9 +28,6 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
     case CC_NE: 
       *dest = cpu.ZF != 0;
       break;
-    case CC_NL:
-      *dest = cpu.ZF == 0 || cpu.SF == cpu.OF;
-      break;
 
     default: panic("should not reach here");
     case CC_P: panic("n86 does not have PF");
