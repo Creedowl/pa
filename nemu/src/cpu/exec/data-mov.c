@@ -54,7 +54,7 @@ make_EHelper(leave) {
 make_EHelper(cltd) {
   if (decoding.is_operand_size_16) {
     rtl_lr(&t0, R_AX, 2);
-    t1 = t0 < 0 ? 0xffff : 0;
+    t1 = (int)t0 < 0 ? 0xffff : 0;
     rtl_sr(R_DX, 2, &t1);
   }
   else {
