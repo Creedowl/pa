@@ -53,10 +53,14 @@ make_EHelper(leave) {
 
 make_EHelper(cltd) {
   if (decoding.is_operand_size_16) {
-    TODO();
+    rtl_lr(&t0, R_AX, 2);
+    t1 = t0 < 0 ? 0xffff : 0;
+    rtl_sr(R_DX, 2, &t0);
   }
   else {
-    TODO();
+    rtl_lr(&t0, R_EAX, 4);
+    t1 = t0 < 0 ? 0xffffffff : 0;
+    rtl_sr(R_EDX, 4, &t0);
   }
 
   print_asm(decoding.is_operand_size_16 ? "cwtl" : "cltd");
