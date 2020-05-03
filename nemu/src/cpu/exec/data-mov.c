@@ -59,7 +59,7 @@ make_EHelper(cltd) {
   }
   else {
     rtl_lr(&t0, R_EAX, 4);
-    t1 = t0 < 0 ? 0xffffffff : 0;
+    t1 = (int)t0 < 0 ? 0xffffffff : 0;
     rtl_sr(R_EDX, 4, &t1);
   }
 
