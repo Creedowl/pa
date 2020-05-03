@@ -12,7 +12,7 @@ make_EHelper(push) {
     t0 = id_dest->addr;
     rtl_sext(&t0, &t0, id_dest->width);
   } else {
-    t0 = id_dest->imm;
+    t0 = id_dest->val;
   }
     
   rtl_push(&t0);
