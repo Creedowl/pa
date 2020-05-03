@@ -9,10 +9,10 @@ make_EHelper(push) {
   if (id_dest->type == OP_TYPE_REG) {
     rtl_lr(&t0, id_dest->reg, id_dest->width);
   } else if (id_dest->type == OP_TYPE_MEM) {
-    t0 = id_dest->addr;
+    t0 = id_dest->val;
     rtl_sext(&t0, &t0, id_dest->width);
   } else {
-    t0 = id_dest->val;
+    t0 = id_dest->imm;
   }
     
   rtl_push(&t0);
