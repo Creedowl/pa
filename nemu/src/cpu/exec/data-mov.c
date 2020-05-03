@@ -6,16 +6,10 @@ make_EHelper(mov) {
 }
 
 make_EHelper(push) {
-  if (id_dest->type == OP_TYPE_REG) {
-    rtl_lr(&t0, id_dest->reg, 4);
-  } else if (id_dest->type == OP_TYPE_MEM) {
-    t0 = id_dest->addr;
-    rtl_sext(&t0, &t0, id_dest->width);
-  } else {
-    t0 = id_dest->imm;
-  }
-    
-  rtl_push(&t0);
+	if (id_dest->width == 1) {
+		id_dest->val = (int32_t)(int8_t)id_dest->val;
+	}
+	rtl_push(&id_dest->val);
 
   print_asm_template1(push);
 }
