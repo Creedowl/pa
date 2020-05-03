@@ -22,21 +22,23 @@ make_EHelper(add) {
 }
 
 make_EHelper(sub) {
-  rtl_sub(&t2, &id_dest->val, &id_src->val);
-  rtl_sltu(&t3, &id_dest->val, &t2);
-  operand_write(id_dest, &t2);
-
-  rtl_update_ZFSF(&t2, id_dest->width);
-
-  rtl_sltu(&t0, &id_dest->val, &t2);
-  rtl_or(&t0, &t3, &t0);
-  rtl_set_CF(&t0);
-
-  rtl_xor(&t0, &id_dest->val, &id_src->val);
-  rtl_xor(&t1, &id_dest->val, &t2);
-  rtl_and(&t0, &t0, &t1);
-  rtl_msb(&t0, &t0, id_dest->width);
-  rtl_set_OF(&t0);
+  // dest - src
+  rtl_sub(&t0, &id_dest->val, &id_src->val);
+  // set reg
+  operand_write(id_dest, &t0);
+  rtl_update_ZFSF(&t0, id_dest->width);
+  // dest < src, set CF
+  rtl_sltu(&t1, &id_dest->val, &id_src->val);
+  rtl_set_CF(&t1);
+  // dest and src have opposite signs
+  rtl_xor(&t1, &id_dest->val, &id_src->val);
+  // result and src have the same signs
+  rtl_xor(&t2, &t0, &id_src->val);
+  rtl_not(&t2);
+  rtl_and(&t3, &t1, &t2);
+  // get sign
+  rtl_msb(&t3, &t3, id_dest->width);
+  rtl_set_OF(&t3);
 
   print_asm_template2(sub);
 }
