@@ -23,6 +23,8 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
       *dest = cpu.CF == 1 || cpu.ZF == 1;
       break;
     case CC_S:
+      *dest = cpu.SF == 1;
+      break;
     case CC_L:
       *dest = cpu.SF != cpu.OF;
       break;
