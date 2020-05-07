@@ -41,8 +41,8 @@ static make_EHelper(name) { \
 
 /* 0x80, 0x81, 0x83 */
 make_group(gp1,
-    EX(add), EMPTY, EMPTY, EMPTY,
-    EX(and), EX(sub), EMPTY, EX(cmp))
+    EX(add), EX(or), EX(adc), EX(sbb),
+    EX(and), EX(sub), EX(xor), EX(cmp))
 
   /* 0xc0, 0xc1, 0xd0, 0xd1, 0xd2, 0xd3 */
 make_group(gp2,
@@ -51,7 +51,7 @@ make_group(gp2,
 
   /* 0xf6, 0xf7 */
 make_group(gp3,
-    IDEXW(test_I, test, 1), EMPTY, EX(not), EMPTY,
+    IDEXW(test_I, test, 1), EMPTY, EX(not), EX(neg),
     EX(mul), EX(imul1), EX(div), EX(idiv))
 
   /* 0xfe */
@@ -100,9 +100,9 @@ opcode_entry opcode_table [512] = {
   /* 0x64 */	EMPTY, EMPTY, EX(operand_size), EMPTY,
   /* 0x68 */	IDEX(I, push), EMPTY, IDEXW(I, push, 1), EMPTY,
   /* 0x6c */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x70 */	EMPTY, EMPTY, EMPTY, EMPTY,
+  /* 0x70 */	IDEXW(J, jcc, 1), IDEXW(J, jcc, 1), IDEXW(J, jcc, 1), IDEXW(J, jcc, 1),
   /* 0x74 */	IDEXW(J, jcc, 1), IDEXW(J, jcc, 1), IDEXW(J, jcc, 1), IDEXW(J, jcc, 1),
-  /* 0x78 */	EMPTY, EMPTY, EMPTY, EMPTY,
+  /* 0x78 */	IDEXW(J, jcc, 1), IDEXW(J, jcc, 1), IDEXW(J, jcc, 1), IDEXW(J, jcc, 1),
   /* 0x7c */	IDEXW(J, jcc, 1), IDEXW(J, jcc, 1), IDEXW(J, jcc, 1), IDEXW(J, jcc, 1),
   /* 0x80 */	IDEXW(I2E, gp1, 1), IDEX(I2E, gp1), EMPTY, IDEX(SI2E, gp1),
   /* 0x84 */	IDEXW(G2E, test, 1), IDEX(G2E, test), EMPTY, EMPTY,
@@ -175,10 +175,10 @@ opcode_entry opcode_table [512] = {
   /* 0x84 */	IDEX(J, jcc), IDEX(J, jcc), IDEX(J, jcc), IDEX(J, jcc),
   /* 0x88 */	IDEX(J, jcc), IDEX(J, jcc), IDEX(J, jcc), IDEX(J, jcc),
   /* 0x8c */	IDEX(J, jcc), IDEX(J, jcc), IDEX(J, jcc), IDEX(J, jcc),
-  /* 0x90 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x94 */	IDEXW(E, setcc, 1), IDEXW(E, setcc, 1), EMPTY, EMPTY,
-  /* 0x98 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x9c */	EMPTY, EMPTY, EMPTY, EMPTY,
+  /* 0x90 */	IDEXW(E, setcc, 1), IDEXW(E, setcc, 1), IDEXW(E, setcc, 1), IDEXW(E, setcc, 1),
+  /* 0x94 */	IDEXW(E, setcc, 1), IDEXW(E, setcc, 1), IDEXW(E, setcc, 1), IDEXW(E, setcc, 1),
+  /* 0x98 */	IDEX(E, setcc), IDEX(E, setcc), IDEX(E, setcc), IDEX(E, setcc),
+  /* 0x9c */	IDEX(E, setcc), IDEX(E, setcc), IDEX(E, setcc), IDEX(E, setcc),
   /* 0xa0 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xa4 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xa8 */	EMPTY, EMPTY, EMPTY, EMPTY,
