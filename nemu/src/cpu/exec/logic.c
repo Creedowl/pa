@@ -41,6 +41,7 @@ make_EHelper(or) {
 }
 
 make_EHelper(sar) {
+  Log("%d %08x %d %x", id_dest->width, id_dest->val, id_src->val, *eip);
   rtl_sext(&t1, &id_dest->val, id_dest->width);
   rtl_sar(&t0, &t1, &id_src->val);
   t1 = 0x1 << (id_dest->width * 8);
