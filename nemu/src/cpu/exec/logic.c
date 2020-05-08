@@ -47,7 +47,7 @@ make_EHelper(sar) {
   // } else if (id_dest->width == 2) {
   //   id_dest->val = (int16_t)id_dest->val;
   // }
-  rtl_sar(&t0, &t1, &id_src->val);
+  rtl_sar(&t0, &id_dest->val, &id_src->val);
   operand_write(id_dest, &t0);
   rtl_update_ZFSF(&t0, id_dest->width);
   // unnecessary to update CF and OF in NEMU
