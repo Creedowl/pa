@@ -41,9 +41,9 @@ make_EHelper(or) {
 }
 
 make_EHelper(sar) {
-  Log("%08x", id_dest->val);
+  if (*eip == 0x100685) Log("%08x", id_dest->val);
   rtl_sext(&t1, &id_dest->val, id_dest->width);
-  Log("%08x", t1);
+  if (*eip == 0x100685) Log("%08x", t1);
   // if (id_dest->width == 1) {
   //   id_dest->val = (int8_t)id_dest->val;
   // } else if (id_dest->width == 2) {
