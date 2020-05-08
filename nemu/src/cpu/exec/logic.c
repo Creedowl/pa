@@ -89,7 +89,19 @@ make_EHelper(not) {
 }
 
 make_EHelper(rol) {
-  TODO();
+  t0 = id_src->val;
+  while (t0 != 0) {
+    rtl_msb(&t1, &id_dest->val, id_dest->width);
+    id_dest->val <<=2;
+    id_dest->val += t1;
+    t0--;
+  }
+  if (id_src->val == 1) {
+    rtl_msb(&t1, &id_dest->val, id_dest->width);
+    rtl_get_CF(&t2);
+    t3 = t1 != t2 ? 1 : 0;
+    rtl_set_OF(&t3); 
+  }
   
   print_asm_template2(rol);
 }
