@@ -1,0 +1,2 @@
+
+#define DIFF_TEST
