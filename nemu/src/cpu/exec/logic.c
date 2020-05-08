@@ -102,6 +102,7 @@ make_EHelper(rol) {
     t3 = t1 != t2 ? 1 : 0;
     rtl_set_OF(&t3); 
   }
+  operand_write(id_dest, &id_dest->val);
   
   print_asm_template2(rol);
 }
