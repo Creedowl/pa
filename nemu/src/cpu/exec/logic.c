@@ -41,16 +41,12 @@ make_EHelper(or) {
 }
 
 make_EHelper(sar) {
-  if (*eip == 0x100685) Log("%08x", id_dest->val);
   rtl_sext(&t1, &id_dest->val, id_dest->width);
-  if (*eip == 0x100685) Log("%08x", t1);
-  // if (id_dest->width == 1) {
-  //   id_dest->val = (int8_t)id_dest->val;
-  // } else if (id_dest->width == 2) {
-  //   id_dest->val = (int16_t)id_dest->val;
-  // }
   rtl_sar(&t0, &t1, &id_src->val);
-  operand_write(id_dest, &t0);
+  t1 = 0x1 << (id_dest->width * 8);
+  rtl_or(&t2, &id_dest->val, &t1);
+  rtl_and(&t3, &t2, &t0);
+  operand_write(id_dest, &t3);
   rtl_update_ZFSF(&t0, id_dest->width);
   // unnecessary to update CF and OF in NEMU
 
