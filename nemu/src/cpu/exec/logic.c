@@ -41,10 +41,9 @@ make_EHelper(or) {
 }
 
 make_EHelper(sar) {
-  Log("%d %08x %d %x", id_dest->width, id_dest->val, id_src->val, *eip);
   rtl_sar(&t2,&id_dest->val,&id_src->val);
+  Log("%d %08x %d %x %08x", id_dest->width, id_dest->val, id_src->val, *eip, t2);
   operand_write(id_dest,&t2);
-  Log("%08x", t2);
   rtl_update_ZFSF(&id_dest->val,id_dest->width);
   // rtl_sext(&t1, &id_dest->val, id_dest->width);
   // rtl_sar(&t0, &t1, &id_src->val);
