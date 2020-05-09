@@ -35,6 +35,12 @@ make_EHelper(ret) {
   rtl_pop(&decoding.jmp_eip);
   decoding.is_jmp = true;
 
+  if(decoding.opcode == 0xc2) {
+    rtl_lr(&t0, R_ESP, 4);
+    rtl_add(&t1, &t0, &id_src->val);
+    rtl_sr(R_ESP, 4, &t1);
+  }
+
   print_asm("ret");
 }
 
