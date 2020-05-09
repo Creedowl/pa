@@ -33,7 +33,7 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
       *dest = cpu.SF != cpu.OF;
       break;
     case CC_LE:
-      *dest = cpu.ZF == 0 && cpu.SF != cpu.OF;
+      *dest = cpu.ZF == 1 || cpu.SF != cpu.OF;
       break;
 
     default: panic("should not reach here");
