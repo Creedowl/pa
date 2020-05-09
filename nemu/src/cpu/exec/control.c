@@ -36,11 +36,11 @@ make_EHelper(ret) {
   decoding.is_jmp = true;
 
   if(decoding.opcode == 0xc2) {
-    Log("%x", id_dest->val);
-    cpu.esp += id_dest->val;
-    // rtl_lr(&t0, R_ESP, 4);
-    // rtl_add(&t1, &t0, &id_src->val);
-    // rtl_sr(R_ESP, 4, &t1);
+    // Log("%x", id_dest->val);
+    // cpu.esp += id_dest->val;
+    rtl_lr(&t0, R_ESP, 4);
+    rtl_add(&t1, &t0, &id_dest->val);
+    rtl_sr(R_ESP, 4, &t1);
   }
 
   print_asm("ret");
