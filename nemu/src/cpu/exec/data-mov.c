@@ -6,22 +6,8 @@ make_EHelper(mov) {
 }
 
 make_EHelper(push) {
-  // if (id_dest->type == OP_TYPE_REG) {
-  //   rtl_lr(&t0, id_dest->reg, id_dest->width);
-  // } else if (id_dest->type == OP_TYPE_MEM) {
-  //   t0 = id_dest->val;
-  //   rtl_sext(&t0, &t0, id_dest->width);
-  // } else {
-  //   t0 = id_dest->imm;
-  // }
   rtl_sext(&t0, &id_dest->val, id_dest->width);
   rtl_push(&t0);
-  // if(id_dest->width == 1) {
-  //   uint8_t utmp = id_dest->val;
-  //   int8_t temp = utmp;
-  //   id_dest->val = temp;
-	// }
-  // rtl_push(&id_dest->val);
 
   print_asm_template1(push);
 }
