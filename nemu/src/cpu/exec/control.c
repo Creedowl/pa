@@ -37,7 +37,7 @@ make_EHelper(ret) {
 
   if(decoding.opcode == 0xc2) {
     rtl_lr(&t0, R_ESP, 4);
-    rtl_add(&t1, &t0, &id_src->val);
+    rtl_add(&t1, &t0, &id_src->imm);
     rtl_sr(R_ESP, 4, &t1);
   }
 
