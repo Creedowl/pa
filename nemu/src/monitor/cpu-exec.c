@@ -26,10 +26,6 @@ void cpu_exec(uint64_t n) {
   for (; n > 0; n --) {
     /* Execute one instruction, including instruction fetch,
      * instruction decode, and the actual execution. */
-    if(cpu.eip > 0x106b16) {
-      Log("%x", cpu.eip);
-      nemu_state = NEMU_STOP;
-    }
     exec_wrapper(print_flag);
 
 #ifdef DEBUG

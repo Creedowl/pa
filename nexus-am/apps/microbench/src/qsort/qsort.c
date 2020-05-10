@@ -38,6 +38,6 @@ void bench_qsort_run() {
 }
 
 int bench_qsort_validate() {
-  printk("%d %d", checksum(data, data + N), setting->checksum);
+  // printk("%d %d", checksum(data, data + N), setting->checksum);
   return checksum(data, data + N) == setting->checksum;
 }
