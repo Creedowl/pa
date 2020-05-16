@@ -42,6 +42,15 @@ void diff_test_skip_nemu() { is_skip_nemu = true; }
     printf("qemu.%s: 0x%08x\033[0m\n", #reg, qreg.reg); \
   }
 
+#define check_eflags(qeflags, eflag, offset) \
+  if (((qeflags >> offset) & 1) != cpu.eflag) { \
+    diff = true; \
+    printf("\033[31mdiff test failed, eflags\n"); \
+    printf("eip: 0x%08x\n", cpu.eip); \
+    printf("nemu.%s: %d\n", #eflag, cpu.eflag); \
+    printf("qemu.%s: %d\033[0m\n", #eflag, !cpu.eflag); \
+  }
+
 static uint8_t mbr[] = {
   // start16:
   0xfa,                           // cli
@@ -167,6 +176,12 @@ void difftest_step(uint32_t eip) {
   check_reg(r, esi);
   check_reg(r, edi);
   check_reg(r, eip);
+
+  check_eflags(r.eflags, CF, 0);
+  check_eflags(r.eflags, ZF, 5);
+  check_eflags(r.eflags, SF, 6);
+  check_eflags(r.eflags, IF, 8);
+  check_eflags(r.eflags, OF, 10);
 
   if (diff) {
     nemu_state = NEMU_END;
