@@ -178,11 +178,11 @@ void difftest_step(uint32_t eip) {
   check_reg(r, edi);
   check_reg(r, eip);
 
-  // check_eflags(r.eflags, CF, 0);
-  // check_eflags(r.eflags, ZF, 6);
-  // check_eflags(r.eflags, SF, 7);
-  // check_eflags(r.eflags, IF, 9);
-  // check_eflags(r.eflags, OF, 11);
+  check_eflags(r.eflags, CF, 0);
+  check_eflags(r.eflags, ZF, 6);
+  check_eflags(r.eflags, SF, 7);
+  check_eflags(r.eflags, IF, 9);
+  check_eflags(r.eflags, OF, 11);
 
   if (diff) {
     nemu_state = NEMU_END;
