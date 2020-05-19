@@ -4,8 +4,6 @@
 #include <stdio.h>
 #include <assert.h>
 
-volatile static int dummy = 0;
-
 #ifdef DEBUG
 extern FILE* log_fp;
 #	define Log_write(format, ...) \
