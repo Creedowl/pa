@@ -39,7 +39,9 @@ void diff_test_skip_nemu() { is_skip_nemu = true; }
     printf("\033[31mdiff test failed\n"); \
     printf("eip: 0x%08x\n", cpu.eip); \
     printf("nemu.%s: 0x%08x\n", #reg, cpu.reg); \
-    printf("qemu.%s: 0x%08x\033[0m\n", #reg, qreg.reg); \
+    printf("qemu.%s: 0x%08x\n", #reg, qreg.reg); \
+    printf("nemu.EFLAGS: 0x%x\n", cpu.EFLAGS); \
+    printf("qemu.EFLAGS: 0x%x\033[0m\n", qreg.eflags); \
   }
 
 #define check_eflags(qeflags, eflag, offset) \
