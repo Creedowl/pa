@@ -13,7 +13,6 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
   uint32_t offset_low = vaddr_read(addr + NO * 8, 2);
   uint32_t offset_high = vaddr_read(addr + NO * 8 + 6, 2);
   decoding.jmp_eip = (offset_high << 16) | offset_low;
-  Log("%x", decoding.jmp_eip);
   decoding.is_jmp = true;
 }
 
