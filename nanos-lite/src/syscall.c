@@ -13,7 +13,7 @@ static inline uintptr_t sys_write(uintptr_t fd, uintptr_t buf, uintptr_t len) {
   if(fd == 1 || fd == 2) {
     int i=0;
     for(; i<len; i++) {
-      _putc((char)buf + i);
+      _putc(*((char *)buf + i));
     }
     return i;
   }
