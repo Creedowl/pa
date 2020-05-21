@@ -49,3 +49,5 @@ make_EHelper(out);
 make_EHelper(cwtl);
 make_EHelper(rol);
 make_EHelper(lidt);
+make_EHelper(pusha);
+make_EHelper(popa);
