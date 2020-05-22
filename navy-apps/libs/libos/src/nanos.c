@@ -9,6 +9,8 @@
 // TODO: discuss with syscall interface
 #ifndef __ISA_NATIVE__
 
+extern char end;
+
 // FIXME: this is temporary
 
 int _syscall_(int type, uintptr_t a0, uintptr_t a1, uintptr_t a2){
@@ -25,13 +27,16 @@ int _open(const char *path, int flags, mode_t mode) {
   _exit(SYS_open);
 }
 
-int _write(int fd, void *buf, size_t count){
+int _write(int fd, void *buf, size_t count) {
   // _exit(SYS_write);
-  _syscall_(SYS_write, fd, buf, count);
+  return _syscall_(SYS_write, fd, buf, count);
 }
 
-void *_sbrk(intptr_t increment){
-  return (void *)-1;
+void *_sbrk(intptr_t increment) {
+  if(_syscall_(SYS_brk, end + increment, 0, 0) != 0) return (void *)-1;
+  intptr_t old = (intptr_t)&end;
+  end += increment;
+  return (void *)old;
 }
 
 int _read(int fd, void *buf, size_t count) {
