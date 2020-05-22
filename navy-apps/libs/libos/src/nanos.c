@@ -12,7 +12,7 @@
 #ifndef __ISA_NATIVE__
 
 extern char end;
-intptr_t _break = (intptr_t)&end;
+static intptr_t _break = (intptr_t)&end;
 
 // FIXME: this is temporary
 
