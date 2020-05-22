@@ -42,7 +42,7 @@ void *_sbrk(intptr_t increment) {
   if(res != 0) return (void *)-1;
   intptr_t old = (intptr_t)&end;
   end += increment;
-  sprintf(a, "old %x end %x\n", old, &end);
+  sprintf(a, "old %x end %x\n\n", old, &end);
   write(1, a, 20);
   return (void *)old;
 }
