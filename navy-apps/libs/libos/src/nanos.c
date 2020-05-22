@@ -46,7 +46,7 @@ void *_sbrk(intptr_t increment) {
   if(res != 0) return (void *)-1;
   _break += increment;
   memset(a, '\0', 20);
-  sprintf(a, "old %x end %x\n\n", old, &_break);
+  sprintf(a, "old %x end %x\n\n", old, _break);
   write(1, a, 20);
   return (void *)old;
 }
