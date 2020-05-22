@@ -36,16 +36,14 @@ void *_sbrk(intptr_t increment) {
   char a[20];
   sprintf(a, "inc %x\n", increment);
   write(1, a, 20);
-  int res = _syscall_(SYS_brk, _end + increment, 0, 0);
+  int res = _syscall_(SYS_brk, end + increment, 0, 0);
   sprintf(a, "res %d\n", res);
   write(1, a, 20);
   if(res != 0) return (void *)-1;
-  intptr_t old = (intptr_t)&_end;
-  // sprintf(a, "%x %p\n", old, &_end);
-  // write(1, a, 20);
-  _end += increment;
-  // sprintf(a, "end %x\n", &end);
-  // write(1, a, 20);
+  intptr_t old = (intptr_t)&end;
+  end += increment;
+  sprintf(a, "old %x end %x\n", old, &end);
+  write(1, a, 20);
   return (void *)old;
 }
 
