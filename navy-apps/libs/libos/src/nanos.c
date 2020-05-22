@@ -32,11 +32,11 @@ int _write(int fd, void *buf, size_t count) {
   return _syscall_(SYS_write, fd, (uintptr_t)buf, count);
 }
 
-void *_sbrk(intptr_t increment) {
   char a[20];
   char b[20];
   char c[20];
   char d[20];
+void *_sbrk(intptr_t increment) {
   sprintf(a, "inc %x\n", increment);
   write(1, a, 20);
   int res = _syscall_(SYS_brk, end + increment, 0, 0);
