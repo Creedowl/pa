@@ -37,7 +37,7 @@ void *_sbrk(intptr_t increment) {
   int res = _syscall_(SYS_brk, end + increment, 0, 0);
   if(res != 0) return (void *)-1;
   intptr_t old = (intptr_t)&end;
-  sprintf(a, "%d\n", old);
+  sprintf(a, "%x\n\0", old);
   write(1, a, 20);
   end += increment;
   return (void *)old;
