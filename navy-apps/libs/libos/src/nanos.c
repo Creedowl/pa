@@ -9,7 +9,7 @@
 // TODO: discuss with syscall interface
 #ifndef __ISA_NATIVE__
 
-extern char end, _end;
+extern char end;
 
 // FIXME: this is temporary
 
@@ -33,17 +33,18 @@ int _write(int fd, void *buf, size_t count) {
 }
 
 void *_sbrk(intptr_t increment) {
+  intptr_t _break = (intptr_t)&end;
+  intptr_t old = _break;
   char a[20];
   // memset(a, '\0', 20);
   // sprintf(a, "inc %x\n", increment);
   // write(1, a, 20);
-  int res = _syscall_(SYS_brk, end + increment, 0, 0);
+  int res = _syscall_(SYS_brk, _break + increment, 0, 0);
   // memset(a, '\0', 20);
   // sprintf(a, "res %d\n", res);
   // write(1, a, 20);
   if(res != 0) return (void *)-1;
-  intptr_t old = (intptr_t)&end;
-  end += increment;
+  _break += increment;
   memset(a, '\0', 20);
   sprintf(a, "old %x end %x\n\n", old, &end);
   write(1, a, 20);
