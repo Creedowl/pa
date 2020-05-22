@@ -38,7 +38,10 @@ void *_sbrk(intptr_t increment) {
   int res = _syscall_(SYS_brk, _break + increment, 0, 0);
   if(res != 0) return (void *)-1;
   _break += increment;
-  printf("old %x end %x\n", old, _break);
+  char a[20];
+  sprintf(a, "old %x end %x\n", old, _break);
+  write(1, a, 20);
+  // printf("old %x end %x\n", old, _break);
   return (void *)old;
 }
 
