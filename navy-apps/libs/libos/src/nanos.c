@@ -34,16 +34,19 @@ int _write(int fd, void *buf, size_t count) {
 
 void *_sbrk(intptr_t increment) {
   char a[20];
+  char b[20];
+  char c[20];
+  char d[20];
   sprintf(a, "inc %x\n", increment);
   write(1, a, 20);
   int res = _syscall_(SYS_brk, end + increment, 0, 0);
-  sprintf(a, "res %d\n", res);
-  write(1, a, 20);
+  sprintf(b, "res %d\n", res);
+  write(1, b, 20);
   if(res != 0) return (void *)-1;
   intptr_t old = (intptr_t)&end;
   end += increment;
-  sprintf(a, "old %x end %x\n\n", old, &end);
-  write(1, a, 20);
+  sprintf(c, "old %x end %x\n\n", old, &end);
+  write(1, c, 20);
   return (void *)old;
 }
 
