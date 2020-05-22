@@ -30,7 +30,6 @@ int _open(const char *path, int flags, mode_t mode) {
 }
 
 int _write(int fd, void *buf, size_t count) {
-  // _exit(SYS_write);
   return _syscall_(SYS_write, fd, (uintptr_t)buf, count);
 }
 
@@ -40,10 +39,11 @@ void *_sbrk(intptr_t increment) {
   int res = _syscall_(SYS_brk, _break + increment, 0, 0);
   if(res != 0) return (void *)-1;
   _break += increment;
+
   char a[40];
   sprintf(a, "inc %x res %x old %x end %x\n\0", increment, res, old, _break);
-  int l = strlen(a);
-  write(1, a, l);
+  write(1, a, strlen(a));
+  
   return (void *)old;
 }
 
