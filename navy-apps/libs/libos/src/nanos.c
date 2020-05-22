@@ -34,6 +34,8 @@ int _write(int fd, void *buf, size_t count) {
 
 void *_sbrk(intptr_t increment) {
   char a[20];
+  sprintf(a, "inc %x\n", increment);
+  write(1, a, 20);
   int res = _syscall_(SYS_brk, end + increment, 0, 0);
   if(res != 0) return (void *)-1;
   intptr_t old = (intptr_t)&end;
