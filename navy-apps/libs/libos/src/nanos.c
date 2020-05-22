@@ -6,8 +6,6 @@
 #include <time.h>
 #include "syscall.h"
 
-#include <klib.h>
-
 // TODO: discuss with syscall interface
 #ifndef __ISA_NATIVE__
 
