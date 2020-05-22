@@ -41,7 +41,7 @@ void *_sbrk(intptr_t increment) {
   if(res != 0) return (void *)-1;
   _break += increment;
   char a[40];
-  sprintf(a, "old %x end %x 222\n\0", old, _break);
+  sprintf(a, "inc %x res %x old %x end %x\n\0", increment, res, old, _break);
   int l = strlen(a);
   write(1, a, l);
   // printf("old %x end %x\n", old, _break);
