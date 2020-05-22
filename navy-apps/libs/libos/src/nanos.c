@@ -6,6 +6,8 @@
 #include <time.h>
 #include "syscall.h"
 
+#include <string.h>
+
 // TODO: discuss with syscall interface
 #ifndef __ISA_NATIVE__
 
@@ -40,7 +42,8 @@ void *_sbrk(intptr_t increment) {
   _break += increment;
   char a[40];
   sprintf(a, "old %x end %x 222\n\0", old, _break);
-  write(1, a, 40);
+  int l = strlen(a);
+  write(1, a, l);
   // printf("old %x end %x\n", old, _break);
   return (void *)old;
 }
