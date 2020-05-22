@@ -40,6 +40,8 @@ void *_sbrk(intptr_t increment) {
   sprintf(a, "%x %p\n", old, &_end);
   write(1, a, 20);
   end += increment;
+  sprintf(a, "%x\n", end);
+  write(1, a, 20);
   return (void *)old;
 }
 
