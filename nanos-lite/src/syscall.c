@@ -10,9 +10,9 @@ static inline uintptr_t sys_open(uintptr_t pathname, uintptr_t flags, uintptr_t 
 }
 
 static inline uintptr_t sys_write(uintptr_t fd, uintptr_t buf, uintptr_t len) {
+  Log("%d", len);
   if(fd == 1 || fd == 2) {
     int i=0;
-    Log("%d", i);
     for(; i<len; i++) {
       _putc(*((char *)buf + i));
     }
