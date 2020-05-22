@@ -33,7 +33,7 @@ int _write(int fd, void *buf, size_t count) {
 }
 
 void *_sbrk(intptr_t increment) {
-  intptr_t _break = (intptr_t)&end;
+  intptr_t _break = (intptr_t)end;
   intptr_t old = _break;
   char a[20];
   memset(a, '\0', 20);
@@ -46,7 +46,7 @@ void *_sbrk(intptr_t increment) {
   if(res != 0) return (void *)-1;
   _break += increment;
   memset(a, '\0', 20);
-  sprintf(a, "old %x end %x\n\n", old, _break);
+  sprintf(a, "old %x end %x \n", old, _break);
   write(1, a, 20);
   return (void *)old;
 }
