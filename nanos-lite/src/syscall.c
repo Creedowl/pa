@@ -9,16 +9,16 @@ static inline uintptr_t sys_open(uintptr_t pathname, uintptr_t flags, uintptr_t 
 }
 
 static inline uintptr_t sys_write(uintptr_t fd, uintptr_t buf, uintptr_t len) {
-  // Log("%d", len);
-  // if(fd == 1 || fd == 2) {
-  //   int i=0;
-  //   for(; i<len; i++) {
-  //     _putc(*((char *)buf + i));
-  //   }
-  //   return i;
-  // }
-  // return -1;
-  return fs_write(fd, (char *)buf, len);
+  Log("%d", len);
+  if(fd == 1 || fd == 2) {
+    int i=0;
+    for(; i<len; i++) {
+      _putc(*((char *)buf + i));
+    }
+    return i;
+  }
+  return -1;
+  // return fs_write(fd, (char *)buf, len);
 }
 
 static inline uintptr_t sys_read(uintptr_t fd, uintptr_t buf, uintptr_t len) {
