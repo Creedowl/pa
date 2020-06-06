@@ -20,7 +20,7 @@ uintptr_t loader(_Protect *as, const char *filename) {
     pa = new_page();
     Log("Map va to pa: 0x%08x to 0x%08x", va, pa);
     _map(as, va, pa);
-    fs_read(fd, pa, i < PGSIZE ? i : PGSIZE);
+    fs_read(fd, pa, i < PGSIZE ? PGSIZE - i : PGSIZE);
     va += PGSIZE;
   }
   fs_close(fd);
