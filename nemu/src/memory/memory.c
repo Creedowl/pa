@@ -55,8 +55,22 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 
 uint32_t vaddr_read(vaddr_t addr, int len) {
   if(cpu.cr0.paging) {
-    if(false) {
-      assert(0);
+    // cross page
+    if((addr >> 12) != ((addr + len -1) >> 12)) {
+      // one page can contain at most 0x1000 entities
+      uint32_t pre_size = 0x1000 - (addr & 0xfff);
+      uint32_t pre_addr, next_addr, pre_data, next_data;
+
+      // data in the previous page
+      pre_addr = page_translate(addr, false);
+      pre_data = paddr_read(pre_addr, pre_size);
+
+      // data in the next page
+      next_addr = page_translate(addr + pre_size, false);
+      next_data = paddr_read(next_addr, len - pre_size);
+
+      // small endian
+      return pre_data | (next_data << (pre_size * 8));
     } else {
       paddr_t paddr = page_translate(addr, false);
       return paddr_read(paddr, len);
@@ -67,8 +81,21 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 
 void vaddr_write(vaddr_t addr, int len, uint32_t data) {
   if(cpu.cr0.paging) {
-    if(false) {
-      assert(0);
+    // cross page
+    if((addr >> 12) != ((addr + len -1) >> 12)) {
+      // one page can contain at most 0x1000 entities
+      uint32_t pre_size = 0x1000 - (addr & 0xfff);
+      uint32_t pre_addr, next_addr;
+
+      // data in the previous page
+      pre_addr = page_translate(addr, false);
+      paddr_write(pre_addr, pre_size, data);
+
+      // data in the next page
+      next_addr = page_translate(addr + pre_size, false);
+      paddr_write(next_addr, len - pre_size, data >> (32 - pre_size * 8));
+
+      return;
     } else {
       paddr_t paddr = page_translate(addr, true);
       paddr_write(paddr, len, data);
