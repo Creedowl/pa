@@ -11,19 +11,19 @@
 uint8_t pmem[PMEM_SIZE];
 
 paddr_t page_translate(vaddr_t vaddr, bool is_write) {
-  // Log("vaddr: 0x%08x is_write: %d", vaddr, is_write);
+  Log("vaddr: 0x%08x is_write: %d", vaddr, is_write);
   uint32_t index = vaddr >> 22;
   uint32_t page = (vaddr >> 12) & 0x3ff;
   uint32_t offset = vaddr & 0xfff;
-  // Log("index: %x page: %x offset: %x", index, page, offset);
+  Log("index: %x page: %x offset: %x", index, page, offset);
   PDE pde;
   uint32_t pde_addr = (cpu.cr3.page_directory_base << 12) + index * 4;
-  // Log("pde_addr: 0x%08x", pde_addr);
+  Log("pde_addr: 0x%08x", pde_addr);
   pde.val = paddr_read(pde_addr, 4);
   assert(pde.present);
   PTE pte;
   uint32_t pte_addr = (pde.page_frame << 12) + page * 4;
-  // Log("pte_addr: 0x%08x", pte_addr);
+  Log("pte_addr: 0x%08x", pte_addr);
   pte.val = paddr_read(pte_addr, 4);
   assert(pte.present);
   if(pde.accessed == 0) {
@@ -35,7 +35,7 @@ paddr_t page_translate(vaddr_t vaddr, bool is_write) {
     pte.dirty = 1;
     paddr_write(pte_addr, 4, pte.val);
   }
-  // Log("addr 0x%08x", (pte.page_frame << 12) + offset);
+  Log("addr 0x%08x", (pte.page_frame << 12) + offset);
   return (pte.page_frame << 12) + offset;
 }
 
