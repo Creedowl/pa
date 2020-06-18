@@ -81,5 +81,9 @@ void _unmap(_Protect *p, void *va) {
 }
 
 _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *const argv[], char *const envp[]) {
-  return NULL;
+  uint32_t *trap_frame_base = ustack.end - 1;
+  for(int i=0; i<17; i++) *(trap_frame_base - i) = 0;
+  *(trap_frame_base - 5) = 0x8;
+  *(trap_frame_base - 6) = (uint32_t)entry;
+  return (_RegSet*) trap_frame_base - 17;
 }
