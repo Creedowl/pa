@@ -88,5 +88,5 @@ _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *cons
   for(int i=0; i<17; i++) *(trap_frame_base - i) = 0;
   *(trap_frame_base - 5) = 0x8;
   *(trap_frame_base - 6) = (uint32_t)entry;
-  return (_RegSet*) trap_frame_base - 17;
+  return (_RegSet*) trap_frame_base - 16;
 }
