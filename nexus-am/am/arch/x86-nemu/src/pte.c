@@ -86,7 +86,6 @@ _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *cons
   uint32_t *trap_frame_base = ustack.end - 1;
   printf("%x %x\n", ustack.end, trap_frame_base);
   for(int i=0; i<17; i++) *(trap_frame_base - i) = 0;
-  *(trap_frame_base - 4) = 0x2;
   *(trap_frame_base - 5) = 0x8;
   *(trap_frame_base - 6) = (uint32_t)entry;
   return (_RegSet*) trap_frame_base - 17;
