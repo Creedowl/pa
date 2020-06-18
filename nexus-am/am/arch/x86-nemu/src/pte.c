@@ -83,19 +83,19 @@ void _unmap(_Protect *p, void *va) {
 }
 
 _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *const argv[], char *const envp[]) {
-  // uint32_t *trap_frame_base = ustack.end - 1;
-  // printf("%x %x\n", ustack.end, trap_frame_base);
-  // for(int i=0; i<17; i++) *(trap_frame_base - i) = 0;
-  // *(trap_frame_base - 5) = 0x8;
-  // *(trap_frame_base - 6) = (uint32_t)entry;
-  // return (_RegSet*) trap_frame_base - 16;
-	uint32_t* trap_frame_start = ustack.end - (13 + 4) * 4;
-	for(int i = 0; i < 17; i++)
-		trap_frame_start[i] = 0;
+  uint32_t *trap_frame_base = ustack.end - 4;
+  printf("%x %x\n", ustack.end, trap_frame_base);
+  for(int i=0; i<17; i++) *(trap_frame_base - i) = 0;
+  *(trap_frame_base - 5) = 0x8;
+  *(trap_frame_base - 6) = (uint32_t)entry;
+  return (_RegSet*) trap_frame_base - 16;
+	// uint32_t* trap_frame_start = ustack.end - (13 + 4) * 4;
+	// for(int i = 0; i < 17; i++)
+	// 	trap_frame_start[i] = 0;
 
-	// trap_frame_start[12] = 0x00000002;  //eflags
-	trap_frame_start[11] = 0x0008;   //cs
-	trap_frame_start[10] = (uint32_t)entry;  //eip
+	// // trap_frame_start[12] = 0x00000002;  //eflags
+	// trap_frame_start[11] = 0x0008;   //cs
+	// trap_frame_start[10] = (uint32_t)entry;  //eip
 
-	return (_RegSet *)trap_frame_start;
+	// return (_RegSet *)trap_frame_start;
 }
