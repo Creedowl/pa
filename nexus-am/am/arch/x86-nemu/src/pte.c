@@ -83,30 +83,10 @@ void _unmap(_Protect *p, void *va) {
 }
 
 _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *const argv[], char *const envp[]) {
-  // uint32_t *trap_frame_base = ustack.end - 1;
-  // printf("%x %x\n", ustack.end, trap_frame_base);
-  // for(int i=0; i<17; i++) *(trap_frame_base - i) = 0;
-  // *(trap_frame_base - 5) = 0x8;
-  // *(trap_frame_base - 6) = (uint32_t)entry;
-  // return (_RegSet*) trap_frame_base - 17;
-  uint32_t *stack = (uint32_t*)ustack.end;
-  *(--stack) = 0x0;   //argc
-  *(--stack) = 0x0;   //argv
-  *(--stack) = 0x0;   //envp
-  *(--stack) = 0x0;   //_start ret_address
-  *(--stack) = 0x202; //eflags
-  *(--stack) = 0x8;   //cs
-  *(--stack) = (uint32_t)entry; //eip
-  *(--stack) = 0x0;   //error_code
-  *(--stack) = 0x81;  //irq
-  *(--stack) = 0x0;   //eax
-  *(--stack) = 0x0;   //ecx
-  *(--stack) = 0x0;   //edx
-  *(--stack) = 0x0;   //ebx
-  *(--stack) = 0x0;   //esp
-  *(--stack) = (uint32_t)ustack.end; //ebp
-  *(--stack) = 0x0;   //esi
-  *(--stack) = 0x0;   //edi
-
-  return (_RegSet*)stack;
+  uint32_t *trap_frame_base = ustack.end - 1;
+  printf("%x %x\n", ustack.end, trap_frame_base);
+  for(int i=0; i<17; i++) *(trap_frame_base - i) = 0;
+  *(trap_frame_base - 5) = 0x8;
+  *(trap_frame_base - 6) = (uint32_t)entry;
+  return (_RegSet*) trap_frame_base - 17;
 }
