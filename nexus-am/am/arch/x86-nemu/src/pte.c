@@ -98,6 +98,7 @@ _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *cons
 		trap_frame_start[i] = 0;
   }
 	// trap_frame_start[12] = 0x00000002;  //eflags
+  printf("%x %x\n", &trap_frame_start[11], &trap_frame_start[10]);
 	trap_frame_start[11] = 0x0008;   //cs
 	trap_frame_start[10] = (uint32_t)entry;  //eip
 
