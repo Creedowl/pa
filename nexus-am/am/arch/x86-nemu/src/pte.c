@@ -84,15 +84,15 @@ void _unmap(_Protect *p, void *va) {
 
 _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *const argv[], char *const envp[]) {
   uint32_t *trap_frame_base = (uint32_t*)ustack.end - 1;
-  printf("%x %x\n", ustack.end, trap_frame_base);
+  // printf("%x %x\n", ustack.end, trap_frame_base);
   for(int i=0; i<17; i++) {
-    printf("%x\n", trap_frame_base - i);
+    // printf("%x\n", trap_frame_base - i);
     *(trap_frame_base - i) = 0;
   }
   *(trap_frame_base - 5) = 0x8;
   *(trap_frame_base - 6) = (uint32_t)entry;
-  printf("%x %x\n", trap_frame_base - 5, trap_frame_base - 6);
-  printf("%x\n", trap_frame_base - 16);
+  // printf("%x %x\n", trap_frame_base - 5, trap_frame_base - 6);
+  // printf("%x\n", trap_frame_base - 16);
   return (_RegSet*) (trap_frame_base - 16);
 	// uint32_t* trap_frame_start = ustack.end - (13 + 4) * 4;
 	// for(int i = 0; i < 17; i++) {
