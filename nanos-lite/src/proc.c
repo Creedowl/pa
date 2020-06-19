@@ -33,6 +33,6 @@ _RegSet* schedule(_RegSet *prev) {
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   
   _switch(&current->as);
-  Log("%x %x", prev, current->tf);
+  // Log("%x %x", prev, current->tf);
   return current->tf;
 }
