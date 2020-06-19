@@ -66,7 +66,7 @@ typedef struct {
 
   CR3 cr3;
 
-  volatile bool INTR;
+  bool INTR;
 
 } CPU_state;
 
