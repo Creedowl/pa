@@ -260,9 +260,8 @@ void exec_wrapper(bool print_flag) {
   void difftest_step(uint32_t);
   difftest_step(eip);
 #endif
-
+  Log("%x %x", cpu.INTR, cpu.IF);
   if (cpu.INTR & cpu.IF) {
-    Log("intr");
     cpu.INTR = false;
     raise_intr(TIMER_IRQ, cpu.eip);
     update_eip();
