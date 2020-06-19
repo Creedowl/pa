@@ -28,7 +28,10 @@ void load_prog(const char *filename) {
 
 _RegSet* schedule(_RegSet *prev) {
   current->tf = prev;
-  current = &pcb[0];
+  // current = &pcb[0];
+
+  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  
   _switch(&current->as);
   // Log("%x %x", prev, current->tf);
   return current->tf;
