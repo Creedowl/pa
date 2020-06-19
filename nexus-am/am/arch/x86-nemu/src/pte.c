@@ -86,7 +86,7 @@ _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *cons
   uint32_t *trap_frame_base = (uint32_t*)ustack.end - 1;
   for(int i=0; i<17; i++) *(trap_frame_base - i) = 0;
   // eflags
-  *(trap_frame_base - 4) = 0x2;
+  *(trap_frame_base - 4) = 0x202;
   // cs
   *(trap_frame_base - 5) = 0x8;
   // eip
