@@ -262,6 +262,7 @@ void exec_wrapper(bool print_flag) {
 #endif
 
   if (cpu.INTR & cpu.IF) {
+    Log("intr");
     cpu.INTR = false;
     raise_intr(TIMER_IRQ, cpu.eip);
     update_eip();
